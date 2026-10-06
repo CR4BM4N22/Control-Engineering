@@ -1,4 +1,6 @@
 %% Load Measurement Data
+clear;
+clc;
 
 fig = openfig('Con_3point_4k_120sec_error_LP300.fig','invisible');
 %% Find plotted lines
@@ -20,7 +22,7 @@ Ts = 1/fs;
 L = length(FRF.u);
 %% PSD/CPSD Constants
 
-NrWin = 80;
+NrWin = 200;
 nfft = L/NrWin;                                      %% Window length [# samples]
 noverlap = .5*nfft;                                   %% Nr of overlapped samples [# samples]
 
@@ -36,7 +38,7 @@ grid on;
 xlabel('Frequency [Hz]', Interpreter='latex')
 ylabel('Coherence', Interpreter='latex')
 ylim([0 1.2])
-xlim([10 300])
+xlim([1 300])
 
 S = PSD.Sud./PSD.Sdd;
 
@@ -50,12 +52,12 @@ title("FRF Sensitivity")
 grid on;
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Magnitude [dB]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
 subplot(2,1,2)
 semilogx(hz,S_ph)
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Angle [deg]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
 
 freqRes = fs/nfft;
 
@@ -72,12 +74,12 @@ title("FRF Process Sensitivity")
 grid on;
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Magnitude [dB]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
 subplot(2,1,2)
 semilogx(hz,PS_ph)
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Angle [deg]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
 
 % Coherence of d and e
 PSD.coherence_ed = mscohere(FRF.e,FRF.d,hann(nfft),noverlap,nfft,fs);
@@ -89,10 +91,11 @@ grid on;
 xlabel('Frequency [Hz]', Interpreter='latex')
 ylabel('Coherence', Interpreter='latex')
 ylim([0 1.2])
-xlim([10 300])
+xlim([1 300])
 %% Transfer Function Estimation
 
 H = PS./S;
+H = abs(H).*exp(1i*(angle(H) - pi));
 
 H_mag = 20*log10(abs(H));
 H_ph = angle(H) * (180/pi);
@@ -103,9 +106,9 @@ title("FRF Open Loop")
 grid on;
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Magnitude [dB]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
 subplot(2,1,2)
 semilogx(hz,H_ph)
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Angle [deg]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
