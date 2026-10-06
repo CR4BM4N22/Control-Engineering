@@ -21,8 +21,9 @@ L = length(FRF.u);
 
 % Estimate Sensitivity S(f)
 %% PSD/CPSD Constants
-noverlap = 500;                                   %% Nr of overlapped samples [# samples]
-nfft = 1000;                                    %% Window length [# samples]
+nfft = 1000;  
+noverlap = .5*nfft;                                   %% Nr of overlapped samples [# samples]
+                                  %% Window length [# samples]
 
 [PSD.Syu, hz] = cpsd(FRF.y, FRF.u,hann(nfft),noverlap,nfft,fs);
 w = hz .*(2*pi); 
