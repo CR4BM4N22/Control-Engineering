@@ -59,40 +59,10 @@ xlim([10 300])
 
 freqRes = fs/nfft;
 
-% Estimate Process Sensitivity
-PSD.Sed = cpsd(FRF.e, FRF.d,hann(nfft),noverlap,nfft,fs);
-PS = PSD.Sed./PSD.Sdd;
 
-PS_mag = 20*log10(abs(PS));
-PS_ph = angle(PS) * (180/pi);
-figure;
-subplot(2,1,1)
-semilogx(hz,PS_mag);
-title("FRF Process Sensitivity")
-grid on;
-xlabel("Frequency [Hz]",Interpreter="latex")
-ylabel('Magnitude [dB]',Interpreter="latex")
-xlim([10 300])
-subplot(2,1,2)
-semilogx(hz,PS_ph)
-xlabel("Frequency [Hz]",Interpreter="latex")
-ylabel('Angle [deg]',Interpreter="latex")
-xlim([10 300])
-
-% Coherence of d and e
-PSD.coherence_ed = mscohere(FRF.e,FRF.d,hann(nfft),noverlap,nfft,fs);
-% Plot coherence
-figure;
-semilogx(hz, PSD.coherence_ed);
-title('Coherence between d and e')
-grid on;
-xlabel('Frequency [Hz]', Interpreter='latex')
-ylabel('Coherence', Interpreter='latex')
-ylim([0 1.2])
-xlim([10 300])
 %% Transfer Function Estimation
 
-H = PS./S;
+H = 1./S-1;
 
 H_mag = 20*log10(abs(H));
 H_ph = angle(H) * (180/pi);
