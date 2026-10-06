@@ -1,7 +1,6 @@
-clear all;
 clc;
 % Load Measurement Data
-fig = openfig('NoCon_Openloop_4k_30s.fig');
+fig = openfig('NoCon_Openloop_4k_30s_lp300.fig');
 %% Find plotted lines
 ax = findobj(fig, 'Type', 'Axes');
 stairsObj = findobj(ax, 'Type', 'Stair');
@@ -22,7 +21,7 @@ L = length(FRF.u);
 
 % Estimate Sensitivity S(f)
 %% PSD/CPSD Constants
-noverlap = 50;                                   %% Nr of overlapped samples [# samples]
+noverlap = 500;                                   %% Nr of overlapped samples [# samples]
 nfft = 1000;                                    %% Window length [# samples]
 
 [PSD.Syu, hz] = cpsd(FRF.y, FRF.u,hann(nfft),noverlap,nfft,fs);
