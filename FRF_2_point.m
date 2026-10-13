@@ -1,6 +1,6 @@
 %% Load Measurement Data
 
-fig = openfig('Con_3point_4k_120sec_error_LP300.fig','invisible');
+fig = openfig('OurCon_4k_30s_lp200.fig','invisible');
 %% Find plotted lines
 ax = findobj(fig, 'Type', 'Axes');
 stairsObj = findobj(ax, 'Type', 'Stair');
@@ -36,7 +36,7 @@ grid on;
 xlabel('Frequency [Hz]', Interpreter='latex')
 ylabel('Coherence', Interpreter='latex')
 ylim([0 1.2])
-xlim([10 300])
+xlim([1 300])
 
 S = PSD.Sud./PSD.Sdd;
 
@@ -50,12 +50,12 @@ title("FRF Sensitivity")
 grid on;
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Magnitude [dB]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
 subplot(2,1,2)
 semilogx(hz,S_ph)
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Angle [deg]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
 
 freqRes = fs/nfft;
 
@@ -73,9 +73,9 @@ title("FRF Open Loop")
 grid on;
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Magnitude [dB]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
 subplot(2,1,2)
 semilogx(hz,H_ph)
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Angle [deg]',Interpreter="latex")
-xlim([10 300])
+xlim([1 300])
