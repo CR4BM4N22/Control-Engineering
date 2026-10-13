@@ -1,6 +1,6 @@
 clc;
 % Load Measurement Data
-fig = openfig('NoCon_Openloop_4k_30s_lp300.fig');
+fig = openfig('openloop_4k_60sec.fig');
 %% Find plotted lines
 ax = findobj(fig, 'Type', 'Axes');
 stairsObj = findobj(ax, 'Type', 'Stair');
@@ -11,8 +11,8 @@ FRF.y = stairsObj(1).YData(:);
 %FRF.uTime = stairsObj(2).XData(:);
 %FRF.u = stairsObj(2).YData(:);
 
-FRF.uTime = stairsObj(3).XData(:);
-FRF.u = stairsObj(3).YData(:);
+FRF.uTime = stairsObj(2).XData(:);
+FRF.u = stairsObj(2).YData(:);
 
 %% Measurement Constants
 fs = 4000;                               %% Insert actual sampling freq! 
