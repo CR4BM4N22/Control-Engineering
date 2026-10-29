@@ -7,9 +7,9 @@
  *
  * Code generation for model "FORCE_model".
  *
- * Model version              : 15.42
+ * Model version              : 15.52
  * Simulink Coder version : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Tue Oct 13 12:38:03 2026
+ * C source code generated on : Thu Oct 29 13:35:14 2026
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-A (64-bit)
@@ -21,11 +21,11 @@
 #include "FORCE_model_types.h"
 #include "rtwtypes.h"
 #include "FORCE_model_private.h"
+#include "rt_nonfinite.h"
 #include <string.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <math.h>
-#include "rt_nonfinite.h"
 #include <stdlib.h>
 
 /* Block signals (default storage) */
@@ -191,7 +191,7 @@ static void FORCE_model_emxFree_char_T(emxArray_char_T_FORCE_model_T **pEmxArray
   }
 }
 
-/* Function for MATLAB Function: '<S3>/SPERTE_measurement_function' */
+/* Function for MATLAB Function: '<S4>/SPERTE_measurement_function' */
 static int8_T FORCE_model_filedata(void)
 {
   int32_T k;
@@ -212,7 +212,7 @@ static int8_T FORCE_model_filedata(void)
   return f;
 }
 
-/* Function for MATLAB Function: '<S3>/SPERTE_measurement_function' */
+/* Function for MATLAB Function: '<S4>/SPERTE_measurement_function' */
 static int8_T FORCE_model_cfopen(const emxArray_char_T_FORCE_model_T *cfilename,
   const char_T *cpermission)
 {
@@ -253,7 +253,7 @@ static int8_T FORCE_model_cfopen(const emxArray_char_T_FORCE_model_T *cfilename,
   return fileid;
 }
 
-/* Function for MATLAB Function: '<S3>/SPERTE_measurement_function' */
+/* Function for MATLAB Function: '<S4>/SPERTE_measurement_function' */
 static int32_T FORCE_model_cfclose(real_T fid)
 {
   FILE *f;
@@ -357,10 +357,10 @@ void FORCE_model_step0(void)           /* Sample time: [0.0s, 0.0s] */
   size_t bytesOutSizet;
   emxArray_char_T_FORCE_model_T *str;
   emxArray_char_T_FORCE_model_T *str_0;
-  real_T rtb_Quantizer1;
   real_T rtb_e;
   real_T rtb_u;
-  real_T y;
+  real_T rtb_x;
+  real_T rtb_y;
   int32_T nbytes;
   int32_T tmp;
   real32_T xout[3];
@@ -371,95 +371,109 @@ void FORCE_model_step0(void)           /* Sample time: [0.0s, 0.0s] */
     rate_monotonic_scheduler();
   }
 
-  /* RandomNumber: '<Root>/Noise' */
-  FORCE_model_B.d = FORCE_model_DW.NextOutput;
+  /* Constant: '<S6>/Start setpoint' */
+  FORCE_model_B.Startsetpoint = FORCE_model_P.Refpower_stat;
 
-  /* S-Function (dlowpass2): '<Root>/Dct2lowpass' */
+  /* S-Function (ref3b): '<S7>/S-Function' */
 
-  /* Level2 S-Function Block: '<Root>/Dct2lowpass' (dlowpass2) */
+  /* Level2 S-Function Block: '<S7>/S-Function' (ref3b) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[0];
     sfcnOutputs(rts,0);
   }
 
-  /* Constant: '<S5>/Start setpoint' */
-  FORCE_model_B.Startsetpoint = FORCE_model_P.Refpower_stat;
+  /* S-Function (ec_Supervisor): '<S10>/S-Function' */
 
-  /* S-Function (ref3b): '<S6>/S-Function' */
-
-  /* Level2 S-Function Block: '<S6>/S-Function' (ref3b) */
+  /* Level2 S-Function Block: '<S10>/S-Function' (ec_Supervisor) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[1];
     sfcnOutputs(rts,0);
   }
 
-  /* S-Function (ec_Supervisor): '<S8>/S-Function' */
+  /* S-Function (ec_Ebox): '<S9>/ec_Ebox' */
 
-  /* Level2 S-Function Block: '<S8>/S-Function' (ec_Supervisor) */
+  /* Level2 S-Function Block: '<S9>/ec_Ebox' (ec_Ebox) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[2];
     sfcnOutputs(rts,0);
   }
 
-  /* S-Function (ec_Ebox): '<S7>/ec_Ebox' */
-
-  /* Level2 S-Function Block: '<S7>/ec_Ebox' (ec_Ebox) */
-  {
-    SimStruct *rts = FORCE_model_M->childSfunctions[3];
-    sfcnOutputs(rts,0);
-  }
-
   /* Quantizer: '<Root>/Quantizer1' */
-  rtb_Quantizer1 = rt_roundd_snf(FORCE_model_B.SFunction[2] /
-    FORCE_model_P.Quantizer1_Interval) * FORCE_model_P.Quantizer1_Interval;
+  rtb_x = rt_roundd_snf(FORCE_model_B.SFunction[2] /
+                        FORCE_model_P.Quantizer1_Interval) *
+    FORCE_model_P.Quantizer1_Interval;
 
-  /* ManualSwitch: '<Root>/Select encoder' */
+  /* ManualSwitch: '<Root>/Select encoder' incorporates:
+   *  Gain: '<S3>/Gain'
+   *  Gain: '<S3>/count2rad'
+   */
   if (FORCE_model_P.Selectencoder_CurrentSetting == 1) {
-    /* ManualSwitch: '<Root>/Select encoder' incorporates:
-     *  Gain: '<S2>/count2rad'
-     */
-    y = FORCE_model_P.count2rad_Gain * FORCE_model_B.ec_Ebox_o2[0];
+    rtb_y = FORCE_model_P.count2rad_Gain * FORCE_model_B.ec_Ebox_o2[0];
   } else {
-    /* ManualSwitch: '<Root>/Select encoder' incorporates:
-     *  Gain: '<S2>/Gain'
-     *  Gain: '<S2>/count2rad'
-     */
-    y = FORCE_model_P.count2rad_Gain * FORCE_model_B.ec_Ebox_o2[1] *
+    rtb_y = FORCE_model_P.count2rad_Gain * FORCE_model_B.ec_Ebox_o2[1] *
       FORCE_model_P.Gain_Gain;
   }
 
   /* End of ManualSwitch: '<Root>/Select encoder' */
 
   /* Sum: '<Root>/Sum' */
-  rtb_e = rtb_Quantizer1 - y;
+  rtb_e = rtb_x - rtb_y;
 
-  /* Gain: '<S1>/Gain1' */
-  FORCE_model_B.Gain1 = FORCE_model_P.Gain1_Gain * rtb_e;
+  /* Gain: '<S8>/Gain1' */
+  FORCE_model_B.Gain1 = FORCE_model_P.Gain1_Gain_j * rtb_e;
 
-  /* S-Function (dleadlag): '<S1>/Dctleadlag' */
+  /* S-Function (dleadlag): '<S8>/Dctleadlag2' */
 
-  /* Level2 S-Function Block: '<S1>/Dctleadlag' (dleadlag) */
+  /* Level2 S-Function Block: '<S8>/Dctleadlag2' (dleadlag) */
+  {
+    SimStruct *rts = FORCE_model_M->childSfunctions[3];
+    sfcnOutputs(rts,0);
+  }
+
+  /* S-Function (dnotch): '<S8>/Dctnotch3' */
+
+  /* Level2 S-Function Block: '<S8>/Dctnotch3' (dnotch) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[4];
     sfcnOutputs(rts,0);
   }
 
-  /* S-Function (dlowpass2): '<S1>/Dct2lowpass' */
+  /* S-Function (dlowpass2): '<S8>/Dct2lowpass4' */
 
-  /* Level2 S-Function Block: '<S1>/Dct2lowpass' (dlowpass2) */
+  /* Level2 S-Function Block: '<S8>/Dct2lowpass4' (dlowpass2) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[5];
     sfcnOutputs(rts,0);
   }
 
-  /* Sum: '<Root>/Sum1' */
-  rtb_u = FORCE_model_B.Dct2lowpass + FORCE_model_B.Dct2lowpass_h;
+  /* Signum: '<S2>/Sign' */
+  if (rtIsNaN(FORCE_model_B.SFunction[1])) {
+    rtb_u = (rtNaN);
+  } else if (FORCE_model_B.SFunction[1] < 0.0) {
+    rtb_u = -1.0;
+  } else {
+    rtb_u = (FORCE_model_B.SFunction[1] > 0.0);
+  }
 
-  /* MATLAB Function: '<S3>/SPERTE_measurement_function' incorporates:
+  /* Sum: '<Root>/Sum1' incorporates:
+   *  Gain: '<S2>/Gain'
+   *  Gain: '<S2>/Gain1'
+   *  Gain: '<S2>/Gain2'
+   *  RandomNumber: '<Root>/Noise'
+   *  Signum: '<S2>/Sign'
+   *  Sum: '<S2>/Add'
+   */
+  rtb_u = (((FORCE_model_P.Gain_Gain_j * FORCE_model_B.SFunction[0] +
+             FORCE_model_P.Gain1_Gain * FORCE_model_B.SFunction[1]) +
+            FORCE_model_P.Gain2_Gain * rtb_u) + FORCE_model_DW.NextOutput) +
+    FORCE_model_B.Dct2lowpass4;
+
+  /* MATLAB Function: '<S4>/SPERTE_measurement_function' incorporates:
    *  Constant: '<Root>/Manual Trigger'
-   *  Constant: '<S3>/SPERTE_measurement_samples'
-   *  Constant: '<S3>/SPERTE_measurement_trigger_command'
-   *  SignalConversion generated from: '<S9>/ SFunction '
+   *  Constant: '<S4>/SPERTE_measurement_samples'
+   *  Constant: '<S4>/SPERTE_measurement_trigger_command'
+   *  RandomNumber: '<Root>/Noise'
+   *  SignalConversion generated from: '<S11>/ SFunction '
    */
   if ((((FORCE_model_P.MeasurementBlock_triggertype == 0) &&
         (FORCE_model_P.ManualTrigger_Value == 1)) ||
@@ -548,9 +562,9 @@ void FORCE_model_step0(void)           /* Sample time: [0.0s, 0.0s] */
       }
 
       if (!(f == NULL)) {
-        xout[0] = (real32_T)FORCE_model_B.Dct2lowpass;
+        xout[0] = (real32_T)FORCE_model_DW.NextOutput;
         xout[1] = (real32_T)rtb_u;
-        xout[2] = (real32_T)y;
+        xout[2] = (real32_T)rtb_y;
         bytesOutSizet = fwrite(&xout[0], sizeof(real32_T), (size_t)3, f);
         if (((real_T)bytesOutSizet > 0.0) && autoflush) {
           fflush(f);
@@ -567,71 +581,71 @@ void FORCE_model_step0(void)           /* Sample time: [0.0s, 0.0s] */
 
   FORCE_model_B.status = FORCE_model_DW.busy;
 
-  /* End of MATLAB Function: '<S3>/SPERTE_measurement_function' */
+  /* End of MATLAB Function: '<S4>/SPERTE_measurement_function' */
 
-  /* RateTransition: '<S4>/Downsample' incorporates:
-   *  SignalConversion: '<S4>/Buffer'
+  /* RateTransition: '<S5>/Downsample' incorporates:
+   *  SignalConversion: '<S5>/Buffer'
    */
   if (FORCE_model_M->Timing.RateInteraction.TID1_2) {
-    FORCE_model_DW.Downsample_Buffer[0] = rtb_Quantizer1;
+    FORCE_model_DW.Downsample_Buffer[0] = 0.0;
     FORCE_model_DW.Downsample_Buffer[1] = rtb_e;
-    FORCE_model_DW.Downsample_Buffer[2] = 0.0;
+    FORCE_model_DW.Downsample_Buffer[2] = rtb_x;
   }
 
-  /* End of RateTransition: '<S4>/Downsample' */
+  /* End of RateTransition: '<S5>/Downsample' */
 
-  /* Saturate: '<S2>/Saturation' */
+  /* Saturate: '<S3>/Saturation' */
   if (rtb_u > FORCE_model_P.Saturation_UpperSat) {
     rtb_u = FORCE_model_P.Saturation_UpperSat;
   } else if (rtb_u < FORCE_model_P.Saturation_LowerSat) {
     rtb_u = FORCE_model_P.Saturation_LowerSat;
   }
 
-  /* Saturate: '<S7>/Saturation' */
+  /* Saturate: '<S9>/Saturation' */
   if (rtb_u > FORCE_model_P.Saturation_UpperSat_d) {
-    /* Saturate: '<S7>/Saturation' */
+    /* Saturate: '<S9>/Saturation' */
     FORCE_model_B.Saturation[0] = FORCE_model_P.Saturation_UpperSat_d;
   } else if (rtb_u < FORCE_model_P.Saturation_LowerSat_e) {
-    /* Saturate: '<S7>/Saturation' */
+    /* Saturate: '<S9>/Saturation' */
     FORCE_model_B.Saturation[0] = FORCE_model_P.Saturation_LowerSat_e;
   } else {
-    /* Saturate: '<S7>/Saturation' */
+    /* Saturate: '<S9>/Saturation' */
     FORCE_model_B.Saturation[0] = rtb_u;
   }
 
-  /* Saturate: '<S2>/Saturation' incorporates:
-   *  Constant: '<S2>/Constant2'
+  /* Saturate: '<S3>/Saturation' incorporates:
+   *  Constant: '<S3>/Constant2'
    */
   if (FORCE_model_P.Constant2_Value > FORCE_model_P.Saturation_UpperSat) {
-    y = FORCE_model_P.Saturation_UpperSat;
+    rtb_x = FORCE_model_P.Saturation_UpperSat;
   } else if (FORCE_model_P.Constant2_Value < FORCE_model_P.Saturation_LowerSat)
   {
-    y = FORCE_model_P.Saturation_LowerSat;
+    rtb_x = FORCE_model_P.Saturation_LowerSat;
   } else {
-    y = FORCE_model_P.Constant2_Value;
+    rtb_x = FORCE_model_P.Constant2_Value;
   }
 
-  /* Saturate: '<S7>/Saturation' */
-  if (y > FORCE_model_P.Saturation_UpperSat_d) {
-    /* Saturate: '<S7>/Saturation' */
+  /* Saturate: '<S9>/Saturation' */
+  if (rtb_x > FORCE_model_P.Saturation_UpperSat_d) {
+    /* Saturate: '<S9>/Saturation' */
     FORCE_model_B.Saturation[1] = FORCE_model_P.Saturation_UpperSat_d;
-  } else if (y < FORCE_model_P.Saturation_LowerSat_e) {
-    /* Saturate: '<S7>/Saturation' */
+  } else if (rtb_x < FORCE_model_P.Saturation_LowerSat_e) {
+    /* Saturate: '<S9>/Saturation' */
     FORCE_model_B.Saturation[1] = FORCE_model_P.Saturation_LowerSat_e;
   } else {
-    /* Saturate: '<S7>/Saturation' */
-    FORCE_model_B.Saturation[1] = y;
+    /* Saturate: '<S9>/Saturation' */
+    FORCE_model_B.Saturation[1] = rtb_x;
   }
 
-  /* Gain: '<S7>/Gain' incorporates:
-   *  Constant: '<S2>/Constant'
+  /* Gain: '<S9>/Gain' incorporates:
+   *  Constant: '<S3>/Constant'
    */
   FORCE_model_B.Gain[0] = FORCE_model_P.Gain_Gain_g *
     FORCE_model_P.Constant_Value[0];
   FORCE_model_B.Gain[1] = FORCE_model_P.Gain_Gain_g *
     FORCE_model_P.Constant_Value[1];
 
-  /* Constant: '<S2>/Constant1' */
+  /* Constant: '<S3>/Constant1' */
   memcpy(&FORCE_model_B.Constant1[0], &FORCE_model_P.Constant1_Value[0], sizeof
          (real_T) << 3U);
 
@@ -664,7 +678,7 @@ void FORCE_model_step0(void)           /* Sample time: [0.0s, 0.0s] */
 /* Model step function for TID2 */
 void FORCE_model_step2(void)           /* Sample time: [0.002s, 0.0s] */
 {
-  /* RateTransition: '<S4>/Downsample' */
+  /* RateTransition: '<S5>/Downsample' */
   FORCE_model_B.Downsample[0] = FORCE_model_DW.Downsample_Buffer[0];
   FORCE_model_B.Downsample[1] = FORCE_model_DW.Downsample_Buffer[1];
   FORCE_model_B.Downsample[2] = FORCE_model_DW.Downsample_Buffer[2];
@@ -759,15 +773,15 @@ void FORCE_model_initialize(void)
     FORCE_model_M->Timing.sampleHits = (&mdlSampleHits[0]);
   }
 
-  rtmSetTFinal(FORCE_model_M, -1);
+  rtmSetTFinal(FORCE_model_M, 3.0);
   FORCE_model_M->Timing.stepSize0 = 0.00025;
   FORCE_model_M->Timing.stepSize1 = 0.00025;
 
   /* External mode info */
-  FORCE_model_M->Sizes.checksums[0] = (1558342704U);
-  FORCE_model_M->Sizes.checksums[1] = (4173499359U);
-  FORCE_model_M->Sizes.checksums[2] = (1082757106U);
-  FORCE_model_M->Sizes.checksums[3] = (3591005018U);
+  FORCE_model_M->Sizes.checksums[0] = (1403277904U);
+  FORCE_model_M->Sizes.checksums[1] = (2471996213U);
+  FORCE_model_M->Sizes.checksums[2] = (2732773906U);
+  FORCE_model_M->Sizes.checksums[3] = (1815359111U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -846,7 +860,7 @@ void FORCE_model_initialize(void)
       }
     }
 
-    /* Level2 S-Function Block: FORCE_model/<Root>/Dct2lowpass (dlowpass2) */
+    /* Level2 S-Function Block: FORCE_model/<S7>/S-Function (ref3b) */
     {
       SimStruct *rts = FORCE_model_M->childSfunctions[0];
 
@@ -912,7 +926,7 @@ void FORCE_model_initialize(void)
         {
           real_T const **sfcnUPtrs = (real_T const **)
             &FORCE_model_M->NonInlinedSFcns.Sfcn0.UPtrs0;
-          sfcnUPtrs[0] = &FORCE_model_B.d;
+          sfcnUPtrs[0] = &FORCE_model_B.Startsetpoint;
           ssSetInputPortSignalPtrs(rts, 0, (InputPtrsType)&sfcnUPtrs[0]);
           _ssSetInputPortNumDimensions(rts, 0, 1);
           ssSetInputPortWidthAsInt(rts, 0, 1);
@@ -936,14 +950,14 @@ void FORCE_model_initialize(void)
         /* port 0 */
         {
           _ssSetOutputPortNumDimensions(rts, 0, 1);
-          ssSetOutputPortWidthAsInt(rts, 0, 1);
-          ssSetOutputPortSignal(rts, 0, ((real_T *) &FORCE_model_B.Dct2lowpass));
+          ssSetOutputPortWidthAsInt(rts, 0, 3);
+          ssSetOutputPortSignal(rts, 0, ((real_T *) FORCE_model_B.SFunction));
         }
       }
 
       /* path info */
-      ssSetModelName(rts, "Dct2lowpass");
-      ssSetPath(rts, "FORCE_model/Dct2lowpass");
+      ssSetModelName(rts, "S-Function");
+      ssSetPath(rts, "FORCE_model/Subsystem/S-Function");
       ssSetRTModel(rts,FORCE_model_M);
       ssSetParentSS(rts, (NULL));
       ssSetRootSS(rts, rts);
@@ -953,15 +967,13 @@ void FORCE_model_initialize(void)
       {
         mxArray **sfcnParams = (mxArray **)
           &FORCE_model_M->NonInlinedSFcns.Sfcn0.params;
-        ssSetSFcnParamsCount(rts, 3);
+        ssSetSFcnParamsCount(rts, 1);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.Dct2lowpass_P1_Size);
-        ssSetSFcnParam(rts, 1, (mxArray*)FORCE_model_P.Dct2lowpass_P2_Size);
-        ssSetSFcnParam(rts, 2, (mxArray*)FORCE_model_P.Dct2lowpass_P3_Size);
+        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.SFunction_P1_Size);
       }
 
       /* work vectors */
-      ssSetRWork(rts, (real_T *) &FORCE_model_DW.Dct2lowpass_RWORK[0]);
+      ssSetRWork(rts, (real_T *) &FORCE_model_DW.SFunction_RWORK[0]);
 
       {
         struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
@@ -973,21 +985,21 @@ void FORCE_model_initialize(void)
         ssSetNumDWorkAsInt(rts, 1);
 
         /* RWORK */
-        ssSetDWorkWidthAsInt(rts, 0, 4);
+        ssSetDWorkWidthAsInt(rts, 0, 50);
         ssSetDWorkDataType(rts, 0,SS_DOUBLE);
         ssSetDWorkComplexSignal(rts, 0, 0);
-        ssSetDWork(rts, 0, &FORCE_model_DW.Dct2lowpass_RWORK[0]);
+        ssSetDWork(rts, 0, &FORCE_model_DW.SFunction_RWORK[0]);
       }
 
       /* registration */
-      dlowpass2(rts);
+      ref3b(rts);
       sfcnInitializeSizes(rts);
       sfcnInitializeSampleTimes(rts);
 
       /* adjust sample time */
-      ssSetSampleTime(rts, 0, 0.00025);
+      ssSetSampleTime(rts, 0, 0.0);
       ssSetOffsetTime(rts, 0, 0.0);
-      sfcnTsMap[0] = 1;
+      sfcnTsMap[0] = 0;
 
       /* set compiled values of dynamic vector attributes */
       ssSetNumNonsampledZCsAsInt(rts, 0);
@@ -1001,7 +1013,7 @@ void FORCE_model_initialize(void)
       ssSetInputPortBufferDstPort(rts, 0, -1);
     }
 
-    /* Level2 S-Function Block: FORCE_model/<S6>/S-Function (ref3b) */
+    /* Level2 S-Function Block: FORCE_model/<S10>/S-Function (ec_Supervisor) */
     {
       SimStruct *rts = FORCE_model_M->childSfunctions[1];
 
@@ -1049,31 +1061,6 @@ void FORCE_model_initialize(void)
           &FORCE_model_M->NonInlinedSFcns.periodicStatesInfo[1]);
       }
 
-      /* inputs */
-      {
-        _ssSetNumInputPorts(rts, 1);
-        ssSetPortInfoForInputs(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn1.inputPortInfo[0]);
-        ssSetPortInfoForInputs(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn1.inputPortInfo[0]);
-        _ssSetPortInfo2ForInputUnits(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn1.inputPortUnits[0]);
-        ssSetInputPortUnit(rts, 0, 0);
-        _ssSetPortInfo2ForInputCoSimAttribute(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn1.inputPortCoSimAttribute[0]);
-        ssSetInputPortIsContinuousQuantity(rts, 0, 0);
-
-        /* port 0 */
-        {
-          real_T const **sfcnUPtrs = (real_T const **)
-            &FORCE_model_M->NonInlinedSFcns.Sfcn1.UPtrs0;
-          sfcnUPtrs[0] = &FORCE_model_B.Startsetpoint;
-          ssSetInputPortSignalPtrs(rts, 0, (InputPtrsType)&sfcnUPtrs[0]);
-          _ssSetInputPortNumDimensions(rts, 0, 1);
-          ssSetInputPortWidthAsInt(rts, 0, 1);
-        }
-      }
-
       /* outputs */
       {
         ssSetPortInfoForOutputs(rts,
@@ -1091,14 +1078,15 @@ void FORCE_model_initialize(void)
         /* port 0 */
         {
           _ssSetOutputPortNumDimensions(rts, 0, 1);
-          ssSetOutputPortWidthAsInt(rts, 0, 3);
-          ssSetOutputPortSignal(rts, 0, ((real_T *) FORCE_model_B.SFunction));
+          ssSetOutputPortWidthAsInt(rts, 0, 1);
+          ssSetOutputPortSignal(rts, 0, ((real_T *) &FORCE_model_B.SFunction_b));
         }
       }
 
       /* path info */
       ssSetModelName(rts, "S-Function");
-      ssSetPath(rts, "FORCE_model/Subsystem/S-Function");
+      ssSetPath(rts,
+                "FORCE_model/Fourth-Order Motion System/Ethercat Supervisor/S-Function");
       ssSetRTModel(rts,FORCE_model_M);
       ssSetParentSS(rts, (NULL));
       ssSetRootSS(rts, rts);
@@ -1108,53 +1096,33 @@ void FORCE_model_initialize(void)
       {
         mxArray **sfcnParams = (mxArray **)
           &FORCE_model_M->NonInlinedSFcns.Sfcn1.params;
-        ssSetSFcnParamsCount(rts, 1);
+        ssSetSFcnParamsCount(rts, 2);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.SFunction_P1_Size);
-      }
-
-      /* work vectors */
-      ssSetRWork(rts, (real_T *) &FORCE_model_DW.SFunction_RWORK[0]);
-
-      {
-        struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
-          &FORCE_model_M->NonInlinedSFcns.Sfcn1.dWork;
-        struct _ssDWorkAuxRecord *dWorkAuxRecord = (struct _ssDWorkAuxRecord *)
-          &FORCE_model_M->NonInlinedSFcns.Sfcn1.dWorkAux;
-        ssSetSFcnDWork(rts, dWorkRecord);
-        ssSetSFcnDWorkAux(rts, dWorkAuxRecord);
-        ssSetNumDWorkAsInt(rts, 1);
-
-        /* RWORK */
-        ssSetDWorkWidthAsInt(rts, 0, 50);
-        ssSetDWorkDataType(rts, 0,SS_DOUBLE);
-        ssSetDWorkComplexSignal(rts, 0, 0);
-        ssSetDWork(rts, 0, &FORCE_model_DW.SFunction_RWORK[0]);
+        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.SFunction_P1_Size_k);
+        ssSetSFcnParam(rts, 1, (mxArray*)FORCE_model_P.SFunction_P2_Size);
       }
 
       /* registration */
-      ref3b(rts);
+      ec_Supervisor(rts);
       sfcnInitializeSizes(rts);
       sfcnInitializeSampleTimes(rts);
 
       /* adjust sample time */
-      ssSetSampleTime(rts, 0, 0.0);
+      ssSetSampleTime(rts, 0, 0.00025);
       ssSetOffsetTime(rts, 0, 0.0);
-      sfcnTsMap[0] = 0;
+      sfcnTsMap[0] = 1;
 
       /* set compiled values of dynamic vector attributes */
       ssSetNumNonsampledZCsAsInt(rts, 0);
 
       /* Update connectivity flags for each port */
-      _ssSetInputPortConnected(rts, 0, 1);
       _ssSetOutputPortConnected(rts, 0, 1);
       _ssSetOutputPortBeingMerged(rts, 0, 0);
 
       /* Update the BufferDstPort flags for each input port */
-      ssSetInputPortBufferDstPort(rts, 0, -1);
     }
 
-    /* Level2 S-Function Block: FORCE_model/<S8>/S-Function (ec_Supervisor) */
+    /* Level2 S-Function Block: FORCE_model/<S9>/ec_Ebox (ec_Ebox) */
     {
       SimStruct *rts = FORCE_model_M->childSfunctions[2];
 
@@ -1202,32 +1170,109 @@ void FORCE_model_initialize(void)
           &FORCE_model_M->NonInlinedSFcns.periodicStatesInfo[2]);
       }
 
+      /* inputs */
+      {
+        _ssSetNumInputPorts(rts, 3);
+        ssSetPortInfoForInputs(rts,
+          &FORCE_model_M->NonInlinedSFcns.Sfcn2.inputPortInfo[0]);
+        ssSetPortInfoForInputs(rts,
+          &FORCE_model_M->NonInlinedSFcns.Sfcn2.inputPortInfo[0]);
+        _ssSetPortInfo2ForInputUnits(rts,
+          &FORCE_model_M->NonInlinedSFcns.Sfcn2.inputPortUnits[0]);
+        ssSetInputPortUnit(rts, 0, 0);
+        ssSetInputPortUnit(rts, 1, 0);
+        ssSetInputPortUnit(rts, 2, 0);
+        _ssSetPortInfo2ForInputCoSimAttribute(rts,
+          &FORCE_model_M->NonInlinedSFcns.Sfcn2.inputPortCoSimAttribute[0]);
+        ssSetInputPortIsContinuousQuantity(rts, 0, 0);
+        ssSetInputPortIsContinuousQuantity(rts, 1, 0);
+        ssSetInputPortIsContinuousQuantity(rts, 2, 0);
+
+        /* port 0 */
+        {
+          real_T const **sfcnUPtrs = (real_T const **)
+            &FORCE_model_M->NonInlinedSFcns.Sfcn2.UPtrs0;
+          sfcnUPtrs[0] = FORCE_model_B.Saturation;
+          sfcnUPtrs[1] = &FORCE_model_B.Saturation[1];
+          ssSetInputPortSignalPtrs(rts, 0, (InputPtrsType)&sfcnUPtrs[0]);
+          _ssSetInputPortNumDimensions(rts, 0, 1);
+          ssSetInputPortWidthAsInt(rts, 0, 2);
+        }
+
+        /* port 1 */
+        {
+          real_T const **sfcnUPtrs = (real_T const **)
+            &FORCE_model_M->NonInlinedSFcns.Sfcn2.UPtrs1;
+          sfcnUPtrs[0] = FORCE_model_B.Gain;
+          sfcnUPtrs[1] = &FORCE_model_B.Gain[1];
+          ssSetInputPortSignalPtrs(rts, 1, (InputPtrsType)&sfcnUPtrs[0]);
+          _ssSetInputPortNumDimensions(rts, 1, 1);
+          ssSetInputPortWidthAsInt(rts, 1, 2);
+        }
+
+        /* port 2 */
+        {
+          real_T const **sfcnUPtrs = (real_T const **)
+            &FORCE_model_M->NonInlinedSFcns.Sfcn2.UPtrs2;
+
+          {
+            int_T i1;
+            const real_T *u2 = FORCE_model_B.Constant1;
+            for (i1=0; i1 < 8; i1++) {
+              sfcnUPtrs[i1] = &u2[i1];
+            }
+          }
+
+          ssSetInputPortSignalPtrs(rts, 2, (InputPtrsType)&sfcnUPtrs[0]);
+          _ssSetInputPortNumDimensions(rts, 2, 1);
+          ssSetInputPortWidthAsInt(rts, 2, 8);
+        }
+      }
+
       /* outputs */
       {
         ssSetPortInfoForOutputs(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn2.outputPortInfo[0]);
         ssSetPortInfoForOutputs(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn2.outputPortInfo[0]);
-        _ssSetNumOutputPorts(rts, 1);
+        _ssSetNumOutputPorts(rts, 3);
         _ssSetPortInfo2ForOutputUnits(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn2.outputPortUnits[0]);
         ssSetOutputPortUnit(rts, 0, 0);
+        ssSetOutputPortUnit(rts, 1, 0);
+        ssSetOutputPortUnit(rts, 2, 0);
         _ssSetPortInfo2ForOutputCoSimAttribute(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn2.outputPortCoSimAttribute[0]);
         ssSetOutputPortIsContinuousQuantity(rts, 0, 0);
+        ssSetOutputPortIsContinuousQuantity(rts, 1, 0);
+        ssSetOutputPortIsContinuousQuantity(rts, 2, 0);
 
         /* port 0 */
         {
           _ssSetOutputPortNumDimensions(rts, 0, 1);
-          ssSetOutputPortWidthAsInt(rts, 0, 1);
-          ssSetOutputPortSignal(rts, 0, ((real_T *) &FORCE_model_B.SFunction_b));
+          ssSetOutputPortWidthAsInt(rts, 0, 2);
+          ssSetOutputPortSignal(rts, 0, ((real_T *) FORCE_model_B.ec_Ebox_o1));
+        }
+
+        /* port 1 */
+        {
+          _ssSetOutputPortNumDimensions(rts, 1, 1);
+          ssSetOutputPortWidthAsInt(rts, 1, 2);
+          ssSetOutputPortSignal(rts, 1, ((real_T *) FORCE_model_B.ec_Ebox_o2));
+        }
+
+        /* port 2 */
+        {
+          _ssSetOutputPortNumDimensions(rts, 2, 1);
+          ssSetOutputPortWidthAsInt(rts, 2, 8);
+          ssSetOutputPortSignal(rts, 2, ((real_T *) FORCE_model_B.ec_Ebox_o3));
         }
       }
 
       /* path info */
-      ssSetModelName(rts, "S-Function");
+      ssSetModelName(rts, "ec_Ebox");
       ssSetPath(rts,
-                "FORCE_model/Fourth-Order Motion System/Ethercat Supervisor/S-Function");
+                "FORCE_model/Fourth-Order Motion System/Ethercat E-box/ec_Ebox");
       ssSetRTModel(rts,FORCE_model_M);
       ssSetParentSS(rts, (NULL));
       ssSetRootSS(rts, rts);
@@ -1237,33 +1282,42 @@ void FORCE_model_initialize(void)
       {
         mxArray **sfcnParams = (mxArray **)
           &FORCE_model_M->NonInlinedSFcns.Sfcn2.params;
-        ssSetSFcnParamsCount(rts, 2);
+        ssSetSFcnParamsCount(rts, 1);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.SFunction_P1_Size_k);
-        ssSetSFcnParam(rts, 1, (mxArray*)FORCE_model_P.SFunction_P2_Size);
+        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.ec_Ebox_P1_Size);
       }
 
       /* registration */
-      ec_Supervisor(rts);
+      ec_Ebox(rts);
       sfcnInitializeSizes(rts);
       sfcnInitializeSampleTimes(rts);
 
       /* adjust sample time */
-      ssSetSampleTime(rts, 0, 0.00025);
+      ssSetSampleTime(rts, 0, 0.0);
       ssSetOffsetTime(rts, 0, 0.0);
-      sfcnTsMap[0] = 1;
+      sfcnTsMap[0] = 0;
 
       /* set compiled values of dynamic vector attributes */
       ssSetNumNonsampledZCsAsInt(rts, 0);
 
       /* Update connectivity flags for each port */
+      _ssSetInputPortConnected(rts, 0, 1);
+      _ssSetInputPortConnected(rts, 1, 1);
+      _ssSetInputPortConnected(rts, 2, 1);
       _ssSetOutputPortConnected(rts, 0, 1);
+      _ssSetOutputPortConnected(rts, 1, 1);
+      _ssSetOutputPortConnected(rts, 2, 1);
       _ssSetOutputPortBeingMerged(rts, 0, 0);
+      _ssSetOutputPortBeingMerged(rts, 1, 0);
+      _ssSetOutputPortBeingMerged(rts, 2, 0);
 
       /* Update the BufferDstPort flags for each input port */
+      ssSetInputPortBufferDstPort(rts, 0, -1);
+      ssSetInputPortBufferDstPort(rts, 1, -1);
+      ssSetInputPortBufferDstPort(rts, 2, -1);
     }
 
-    /* Level2 S-Function Block: FORCE_model/<S7>/ec_Ebox (ec_Ebox) */
+    /* Level2 S-Function Block: FORCE_model/<S8>/Dctleadlag2 (dleadlag) */
     {
       SimStruct *rts = FORCE_model_M->childSfunctions[3];
 
@@ -1313,7 +1367,7 @@ void FORCE_model_initialize(void)
 
       /* inputs */
       {
-        _ssSetNumInputPorts(rts, 3);
+        _ssSetNumInputPorts(rts, 1);
         ssSetPortInfoForInputs(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn3.inputPortInfo[0]);
         ssSetPortInfoForInputs(rts,
@@ -1321,52 +1375,18 @@ void FORCE_model_initialize(void)
         _ssSetPortInfo2ForInputUnits(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn3.inputPortUnits[0]);
         ssSetInputPortUnit(rts, 0, 0);
-        ssSetInputPortUnit(rts, 1, 0);
-        ssSetInputPortUnit(rts, 2, 0);
         _ssSetPortInfo2ForInputCoSimAttribute(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn3.inputPortCoSimAttribute[0]);
         ssSetInputPortIsContinuousQuantity(rts, 0, 0);
-        ssSetInputPortIsContinuousQuantity(rts, 1, 0);
-        ssSetInputPortIsContinuousQuantity(rts, 2, 0);
 
         /* port 0 */
         {
           real_T const **sfcnUPtrs = (real_T const **)
             &FORCE_model_M->NonInlinedSFcns.Sfcn3.UPtrs0;
-          sfcnUPtrs[0] = FORCE_model_B.Saturation;
-          sfcnUPtrs[1] = &FORCE_model_B.Saturation[1];
+          sfcnUPtrs[0] = &FORCE_model_B.Gain1;
           ssSetInputPortSignalPtrs(rts, 0, (InputPtrsType)&sfcnUPtrs[0]);
           _ssSetInputPortNumDimensions(rts, 0, 1);
-          ssSetInputPortWidthAsInt(rts, 0, 2);
-        }
-
-        /* port 1 */
-        {
-          real_T const **sfcnUPtrs = (real_T const **)
-            &FORCE_model_M->NonInlinedSFcns.Sfcn3.UPtrs1;
-          sfcnUPtrs[0] = FORCE_model_B.Gain;
-          sfcnUPtrs[1] = &FORCE_model_B.Gain[1];
-          ssSetInputPortSignalPtrs(rts, 1, (InputPtrsType)&sfcnUPtrs[0]);
-          _ssSetInputPortNumDimensions(rts, 1, 1);
-          ssSetInputPortWidthAsInt(rts, 1, 2);
-        }
-
-        /* port 2 */
-        {
-          real_T const **sfcnUPtrs = (real_T const **)
-            &FORCE_model_M->NonInlinedSFcns.Sfcn3.UPtrs2;
-
-          {
-            int_T i1;
-            const real_T *u2 = FORCE_model_B.Constant1;
-            for (i1=0; i1 < 8; i1++) {
-              sfcnUPtrs[i1] = &u2[i1];
-            }
-          }
-
-          ssSetInputPortSignalPtrs(rts, 2, (InputPtrsType)&sfcnUPtrs[0]);
-          _ssSetInputPortNumDimensions(rts, 2, 1);
-          ssSetInputPortWidthAsInt(rts, 2, 8);
+          ssSetInputPortWidthAsInt(rts, 0, 1);
         }
       }
 
@@ -1376,44 +1396,25 @@ void FORCE_model_initialize(void)
           &FORCE_model_M->NonInlinedSFcns.Sfcn3.outputPortInfo[0]);
         ssSetPortInfoForOutputs(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn3.outputPortInfo[0]);
-        _ssSetNumOutputPorts(rts, 3);
+        _ssSetNumOutputPorts(rts, 1);
         _ssSetPortInfo2ForOutputUnits(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn3.outputPortUnits[0]);
         ssSetOutputPortUnit(rts, 0, 0);
-        ssSetOutputPortUnit(rts, 1, 0);
-        ssSetOutputPortUnit(rts, 2, 0);
         _ssSetPortInfo2ForOutputCoSimAttribute(rts,
           &FORCE_model_M->NonInlinedSFcns.Sfcn3.outputPortCoSimAttribute[0]);
         ssSetOutputPortIsContinuousQuantity(rts, 0, 0);
-        ssSetOutputPortIsContinuousQuantity(rts, 1, 0);
-        ssSetOutputPortIsContinuousQuantity(rts, 2, 0);
 
         /* port 0 */
         {
           _ssSetOutputPortNumDimensions(rts, 0, 1);
-          ssSetOutputPortWidthAsInt(rts, 0, 2);
-          ssSetOutputPortSignal(rts, 0, ((real_T *) FORCE_model_B.ec_Ebox_o1));
-        }
-
-        /* port 1 */
-        {
-          _ssSetOutputPortNumDimensions(rts, 1, 1);
-          ssSetOutputPortWidthAsInt(rts, 1, 2);
-          ssSetOutputPortSignal(rts, 1, ((real_T *) FORCE_model_B.ec_Ebox_o2));
-        }
-
-        /* port 2 */
-        {
-          _ssSetOutputPortNumDimensions(rts, 2, 1);
-          ssSetOutputPortWidthAsInt(rts, 2, 8);
-          ssSetOutputPortSignal(rts, 2, ((real_T *) FORCE_model_B.ec_Ebox_o3));
+          ssSetOutputPortWidthAsInt(rts, 0, 1);
+          ssSetOutputPortSignal(rts, 0, ((real_T *) &FORCE_model_B.Dctleadlag2));
         }
       }
 
       /* path info */
-      ssSetModelName(rts, "ec_Ebox");
-      ssSetPath(rts,
-                "FORCE_model/Fourth-Order Motion System/Ethercat E-box/ec_Ebox");
+      ssSetModelName(rts, "Dctleadlag2");
+      ssSetPath(rts, "FORCE_model/Controller (motor side)/temp/Dctleadlag2");
       ssSetRTModel(rts,FORCE_model_M);
       ssSetParentSS(rts, (NULL));
       ssSetRootSS(rts, rts);
@@ -1423,13 +1424,34 @@ void FORCE_model_initialize(void)
       {
         mxArray **sfcnParams = (mxArray **)
           &FORCE_model_M->NonInlinedSFcns.Sfcn3.params;
-        ssSetSFcnParamsCount(rts, 1);
+        ssSetSFcnParamsCount(rts, 3);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.ec_Ebox_P1_Size);
+        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.Dctleadlag2_P1_Size);
+        ssSetSFcnParam(rts, 1, (mxArray*)FORCE_model_P.Dctleadlag2_P2_Size);
+        ssSetSFcnParam(rts, 2, (mxArray*)FORCE_model_P.Dctleadlag2_P3_Size);
+      }
+
+      /* work vectors */
+      ssSetRWork(rts, (real_T *) &FORCE_model_DW.Dctleadlag2_RWORK[0]);
+
+      {
+        struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
+          &FORCE_model_M->NonInlinedSFcns.Sfcn3.dWork;
+        struct _ssDWorkAuxRecord *dWorkAuxRecord = (struct _ssDWorkAuxRecord *)
+          &FORCE_model_M->NonInlinedSFcns.Sfcn3.dWorkAux;
+        ssSetSFcnDWork(rts, dWorkRecord);
+        ssSetSFcnDWorkAux(rts, dWorkAuxRecord);
+        ssSetNumDWorkAsInt(rts, 1);
+
+        /* RWORK */
+        ssSetDWorkWidthAsInt(rts, 0, 2);
+        ssSetDWorkDataType(rts, 0,SS_DOUBLE);
+        ssSetDWorkComplexSignal(rts, 0, 0);
+        ssSetDWork(rts, 0, &FORCE_model_DW.Dctleadlag2_RWORK[0]);
       }
 
       /* registration */
-      ec_Ebox(rts);
+      dleadlag(rts);
       sfcnInitializeSizes(rts);
       sfcnInitializeSampleTimes(rts);
 
@@ -1443,22 +1465,14 @@ void FORCE_model_initialize(void)
 
       /* Update connectivity flags for each port */
       _ssSetInputPortConnected(rts, 0, 1);
-      _ssSetInputPortConnected(rts, 1, 1);
-      _ssSetInputPortConnected(rts, 2, 1);
       _ssSetOutputPortConnected(rts, 0, 1);
-      _ssSetOutputPortConnected(rts, 1, 1);
-      _ssSetOutputPortConnected(rts, 2, 1);
       _ssSetOutputPortBeingMerged(rts, 0, 0);
-      _ssSetOutputPortBeingMerged(rts, 1, 0);
-      _ssSetOutputPortBeingMerged(rts, 2, 0);
 
       /* Update the BufferDstPort flags for each input port */
       ssSetInputPortBufferDstPort(rts, 0, -1);
-      ssSetInputPortBufferDstPort(rts, 1, -1);
-      ssSetInputPortBufferDstPort(rts, 2, -1);
     }
 
-    /* Level2 S-Function Block: FORCE_model/<S1>/Dctleadlag (dleadlag) */
+    /* Level2 S-Function Block: FORCE_model/<S8>/Dctnotch3 (dnotch) */
     {
       SimStruct *rts = FORCE_model_M->childSfunctions[4];
 
@@ -1524,7 +1538,7 @@ void FORCE_model_initialize(void)
         {
           real_T const **sfcnUPtrs = (real_T const **)
             &FORCE_model_M->NonInlinedSFcns.Sfcn4.UPtrs0;
-          sfcnUPtrs[0] = &FORCE_model_B.Gain1;
+          sfcnUPtrs[0] = &FORCE_model_B.Dctleadlag2;
           ssSetInputPortSignalPtrs(rts, 0, (InputPtrsType)&sfcnUPtrs[0]);
           _ssSetInputPortNumDimensions(rts, 0, 1);
           ssSetInputPortWidthAsInt(rts, 0, 1);
@@ -1549,13 +1563,13 @@ void FORCE_model_initialize(void)
         {
           _ssSetOutputPortNumDimensions(rts, 0, 1);
           ssSetOutputPortWidthAsInt(rts, 0, 1);
-          ssSetOutputPortSignal(rts, 0, ((real_T *) &FORCE_model_B.Dctleadlag));
+          ssSetOutputPortSignal(rts, 0, ((real_T *) &FORCE_model_B.Dctnotch3));
         }
       }
 
       /* path info */
-      ssSetModelName(rts, "Dctleadlag");
-      ssSetPath(rts, "FORCE_model/Controller (motor side)/Dctleadlag");
+      ssSetModelName(rts, "Dctnotch3");
+      ssSetPath(rts, "FORCE_model/Controller (motor side)/temp/Dctnotch3");
       ssSetRTModel(rts,FORCE_model_M);
       ssSetParentSS(rts, (NULL));
       ssSetRootSS(rts, rts);
@@ -1565,15 +1579,17 @@ void FORCE_model_initialize(void)
       {
         mxArray **sfcnParams = (mxArray **)
           &FORCE_model_M->NonInlinedSFcns.Sfcn4.params;
-        ssSetSFcnParamsCount(rts, 3);
+        ssSetSFcnParamsCount(rts, 5);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.Dctleadlag_P1_Size);
-        ssSetSFcnParam(rts, 1, (mxArray*)FORCE_model_P.Dctleadlag_P2_Size);
-        ssSetSFcnParam(rts, 2, (mxArray*)FORCE_model_P.Dctleadlag_P3_Size);
+        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.Dctnotch3_P1_Size);
+        ssSetSFcnParam(rts, 1, (mxArray*)FORCE_model_P.Dctnotch3_P2_Size);
+        ssSetSFcnParam(rts, 2, (mxArray*)FORCE_model_P.Dctnotch3_P3_Size);
+        ssSetSFcnParam(rts, 3, (mxArray*)FORCE_model_P.Dctnotch3_P4_Size);
+        ssSetSFcnParam(rts, 4, (mxArray*)FORCE_model_P.Dctnotch3_P5_Size);
       }
 
       /* work vectors */
-      ssSetRWork(rts, (real_T *) &FORCE_model_DW.Dctleadlag_RWORK[0]);
+      ssSetRWork(rts, (real_T *) &FORCE_model_DW.Dctnotch3_RWORK[0]);
 
       {
         struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
@@ -1585,14 +1601,14 @@ void FORCE_model_initialize(void)
         ssSetNumDWorkAsInt(rts, 1);
 
         /* RWORK */
-        ssSetDWorkWidthAsInt(rts, 0, 2);
+        ssSetDWorkWidthAsInt(rts, 0, 4);
         ssSetDWorkDataType(rts, 0,SS_DOUBLE);
         ssSetDWorkComplexSignal(rts, 0, 0);
-        ssSetDWork(rts, 0, &FORCE_model_DW.Dctleadlag_RWORK[0]);
+        ssSetDWork(rts, 0, &FORCE_model_DW.Dctnotch3_RWORK[0]);
       }
 
       /* registration */
-      dleadlag(rts);
+      dnotch(rts);
       sfcnInitializeSizes(rts);
       sfcnInitializeSampleTimes(rts);
 
@@ -1613,7 +1629,7 @@ void FORCE_model_initialize(void)
       ssSetInputPortBufferDstPort(rts, 0, -1);
     }
 
-    /* Level2 S-Function Block: FORCE_model/<S1>/Dct2lowpass (dlowpass2) */
+    /* Level2 S-Function Block: FORCE_model/<S8>/Dct2lowpass4 (dlowpass2) */
     {
       SimStruct *rts = FORCE_model_M->childSfunctions[5];
 
@@ -1679,7 +1695,7 @@ void FORCE_model_initialize(void)
         {
           real_T const **sfcnUPtrs = (real_T const **)
             &FORCE_model_M->NonInlinedSFcns.Sfcn5.UPtrs0;
-          sfcnUPtrs[0] = &FORCE_model_B.Dctleadlag;
+          sfcnUPtrs[0] = &FORCE_model_B.Dctnotch3;
           ssSetInputPortSignalPtrs(rts, 0, (InputPtrsType)&sfcnUPtrs[0]);
           _ssSetInputPortNumDimensions(rts, 0, 1);
           ssSetInputPortWidthAsInt(rts, 0, 1);
@@ -1704,13 +1720,13 @@ void FORCE_model_initialize(void)
         {
           _ssSetOutputPortNumDimensions(rts, 0, 1);
           ssSetOutputPortWidthAsInt(rts, 0, 1);
-          ssSetOutputPortSignal(rts, 0, ((real_T *) &FORCE_model_B.Dct2lowpass_h));
+          ssSetOutputPortSignal(rts, 0, ((real_T *) &FORCE_model_B.Dct2lowpass4));
         }
       }
 
       /* path info */
-      ssSetModelName(rts, "Dct2lowpass");
-      ssSetPath(rts, "FORCE_model/Controller (motor side)/Dct2lowpass");
+      ssSetModelName(rts, "Dct2lowpass4");
+      ssSetPath(rts, "FORCE_model/Controller (motor side)/temp/Dct2lowpass4");
       ssSetRTModel(rts,FORCE_model_M);
       ssSetParentSS(rts, (NULL));
       ssSetRootSS(rts, rts);
@@ -1722,13 +1738,13 @@ void FORCE_model_initialize(void)
           &FORCE_model_M->NonInlinedSFcns.Sfcn5.params;
         ssSetSFcnParamsCount(rts, 3);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.Dct2lowpass_P1_Size_m);
-        ssSetSFcnParam(rts, 1, (mxArray*)FORCE_model_P.Dct2lowpass_P2_Size_c);
-        ssSetSFcnParam(rts, 2, (mxArray*)FORCE_model_P.Dct2lowpass_P3_Size_m);
+        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.Dct2lowpass4_P1_Size);
+        ssSetSFcnParam(rts, 1, (mxArray*)FORCE_model_P.Dct2lowpass4_P2_Size);
+        ssSetSFcnParam(rts, 2, (mxArray*)FORCE_model_P.Dct2lowpass4_P3_Size);
       }
 
       /* work vectors */
-      ssSetRWork(rts, (real_T *) &FORCE_model_DW.Dct2lowpass_RWORK_e[0]);
+      ssSetRWork(rts, (real_T *) &FORCE_model_DW.Dct2lowpass4_RWORK[0]);
 
       {
         struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
@@ -1743,7 +1759,7 @@ void FORCE_model_initialize(void)
         ssSetDWorkWidthAsInt(rts, 0, 4);
         ssSetDWorkDataType(rts, 0,SS_DOUBLE);
         ssSetDWorkComplexSignal(rts, 0, 0);
-        ssSetDWork(rts, 0, &FORCE_model_DW.Dct2lowpass_RWORK_e[0]);
+        ssSetDWork(rts, 0, &FORCE_model_DW.Dct2lowpass4_RWORK[0]);
       }
 
       /* registration */
@@ -1776,29 +1792,29 @@ void FORCE_model_initialize(void)
     uint32_T t;
     uint32_T tseed;
 
-    /* Start for S-Function (dlowpass2): '<Root>/Dct2lowpass' */
-    /* Level2 S-Function Block: '<Root>/Dct2lowpass' (dlowpass2) */
-    {
-      SimStruct *rts = FORCE_model_M->childSfunctions[0];
-      sfcnStart(rts);
-      if (ssGetErrorStatus(rts) != (NULL))
-        return;
-    }
-
-    /* Start for Constant: '<S5>/Start setpoint' */
+    /* Start for Constant: '<S6>/Start setpoint' */
     FORCE_model_B.Startsetpoint = FORCE_model_P.Refpower_stat;
 
-    /* Start for S-Function (ec_Supervisor): '<S8>/S-Function' */
-    /* Level2 S-Function Block: '<S8>/S-Function' (ec_Supervisor) */
+    /* Start for S-Function (ec_Supervisor): '<S10>/S-Function' */
+    /* Level2 S-Function Block: '<S10>/S-Function' (ec_Supervisor) */
     {
-      SimStruct *rts = FORCE_model_M->childSfunctions[2];
+      SimStruct *rts = FORCE_model_M->childSfunctions[1];
       sfcnStart(rts);
       if (ssGetErrorStatus(rts) != (NULL))
         return;
     }
 
-    /* Start for S-Function (dleadlag): '<S1>/Dctleadlag' */
-    /* Level2 S-Function Block: '<S1>/Dctleadlag' (dleadlag) */
+    /* Start for S-Function (dleadlag): '<S8>/Dctleadlag2' */
+    /* Level2 S-Function Block: '<S8>/Dctleadlag2' (dleadlag) */
+    {
+      SimStruct *rts = FORCE_model_M->childSfunctions[3];
+      sfcnStart(rts);
+      if (ssGetErrorStatus(rts) != (NULL))
+        return;
+    }
+
+    /* Start for S-Function (dnotch): '<S8>/Dctnotch3' */
+    /* Level2 S-Function Block: '<S8>/Dctnotch3' (dnotch) */
     {
       SimStruct *rts = FORCE_model_M->childSfunctions[4];
       sfcnStart(rts);
@@ -1806,8 +1822,8 @@ void FORCE_model_initialize(void)
         return;
     }
 
-    /* Start for S-Function (dlowpass2): '<S1>/Dct2lowpass' */
-    /* Level2 S-Function Block: '<S1>/Dct2lowpass' (dlowpass2) */
+    /* Start for S-Function (dlowpass2): '<S8>/Dct2lowpass4' */
+    /* Level2 S-Function Block: '<S8>/Dct2lowpass4' (dlowpass2) */
     {
       SimStruct *rts = FORCE_model_M->childSfunctions[5];
       sfcnStart(rts);
@@ -1815,9 +1831,18 @@ void FORCE_model_initialize(void)
         return;
     }
 
-    /* Start for Constant: '<S2>/Constant1' */
+    /* Start for Constant: '<S3>/Constant1' */
     memcpy(&FORCE_model_B.Constant1[0], &FORCE_model_P.Constant1_Value[0],
            sizeof(real_T) << 3U);
+
+    /* InitializeConditions for S-Function (ref3b): '<S7>/S-Function' */
+    /* Level2 S-Function Block: '<S7>/S-Function' (ref3b) */
+    {
+      SimStruct *rts = FORCE_model_M->childSfunctions[0];
+      sfcnInitializeConditions(rts);
+      if (ssGetErrorStatus(rts) != (NULL))
+        return;
+    }
 
     /* InitializeConditions for RandomNumber: '<Root>/Noise' */
     tmp = floor(FORCE_model_P.Noise_Seed);
@@ -1843,16 +1868,7 @@ void FORCE_model_initialize(void)
 
     /* End of InitializeConditions for RandomNumber: '<Root>/Noise' */
 
-    /* InitializeConditions for S-Function (ref3b): '<S6>/S-Function' */
-    /* Level2 S-Function Block: '<S6>/S-Function' (ref3b) */
-    {
-      SimStruct *rts = FORCE_model_M->childSfunctions[1];
-      sfcnInitializeConditions(rts);
-      if (ssGetErrorStatus(rts) != (NULL))
-        return;
-    }
-
-    /* SystemInitialize for MATLAB Function: '<S3>/SPERTE_measurement_function' */
+    /* SystemInitialize for MATLAB Function: '<S4>/SPERTE_measurement_function' */
     for (i = 0; i < 20; i++) {
       FORCE_model_DW.eml_autoflush[i] = false;
     }
@@ -1866,50 +1882,50 @@ void FORCE_model_initialize(void)
     FORCE_model_DW.fileID = 0.0;
     FORCE_model_DW.busy = 0U;
 
-    /* End of SystemInitialize for MATLAB Function: '<S3>/SPERTE_measurement_function' */
+    /* End of SystemInitialize for MATLAB Function: '<S4>/SPERTE_measurement_function' */
   }
 }
 
 /* Model terminate function */
 void FORCE_model_terminate(void)
 {
-  /* Terminate for S-Function (dlowpass2): '<Root>/Dct2lowpass' */
-  /* Level2 S-Function Block: '<Root>/Dct2lowpass' (dlowpass2) */
+  /* Terminate for S-Function (ref3b): '<S7>/S-Function' */
+  /* Level2 S-Function Block: '<S7>/S-Function' (ref3b) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[0];
     sfcnTerminate(rts);
   }
 
-  /* Terminate for S-Function (ref3b): '<S6>/S-Function' */
-  /* Level2 S-Function Block: '<S6>/S-Function' (ref3b) */
+  /* Terminate for S-Function (ec_Supervisor): '<S10>/S-Function' */
+  /* Level2 S-Function Block: '<S10>/S-Function' (ec_Supervisor) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[1];
     sfcnTerminate(rts);
   }
 
-  /* Terminate for S-Function (ec_Supervisor): '<S8>/S-Function' */
-  /* Level2 S-Function Block: '<S8>/S-Function' (ec_Supervisor) */
+  /* Terminate for S-Function (ec_Ebox): '<S9>/ec_Ebox' */
+  /* Level2 S-Function Block: '<S9>/ec_Ebox' (ec_Ebox) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[2];
     sfcnTerminate(rts);
   }
 
-  /* Terminate for S-Function (ec_Ebox): '<S7>/ec_Ebox' */
-  /* Level2 S-Function Block: '<S7>/ec_Ebox' (ec_Ebox) */
+  /* Terminate for S-Function (dleadlag): '<S8>/Dctleadlag2' */
+  /* Level2 S-Function Block: '<S8>/Dctleadlag2' (dleadlag) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[3];
     sfcnTerminate(rts);
   }
 
-  /* Terminate for S-Function (dleadlag): '<S1>/Dctleadlag' */
-  /* Level2 S-Function Block: '<S1>/Dctleadlag' (dleadlag) */
+  /* Terminate for S-Function (dnotch): '<S8>/Dctnotch3' */
+  /* Level2 S-Function Block: '<S8>/Dctnotch3' (dnotch) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[4];
     sfcnTerminate(rts);
   }
 
-  /* Terminate for S-Function (dlowpass2): '<S1>/Dct2lowpass' */
-  /* Level2 S-Function Block: '<S1>/Dct2lowpass' (dlowpass2) */
+  /* Terminate for S-Function (dlowpass2): '<S8>/Dct2lowpass4' */
+  /* Level2 S-Function Block: '<S8>/Dct2lowpass4' (dlowpass2) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[5];
     sfcnTerminate(rts);

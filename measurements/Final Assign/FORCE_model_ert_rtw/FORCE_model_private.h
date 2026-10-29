@@ -7,9 +7,9 @@
  *
  * Code generation for model "FORCE_model".
  *
- * Model version              : 15.42
+ * Model version              : 15.52
  * Simulink Coder version : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Tue Oct 13 12:38:03 2026
+ * C source code generated on : Thu Oct 29 13:35:14 2026
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-A (64-bit)
@@ -44,10 +44,11 @@
 extern real_T rt_roundd_snf(real_T u);
 extern real_T rt_urand_Upu32_Yd_f_pw_snf(uint32_T *u);
 extern real_T rt_nrand_Upu32_Yd_f_pw_snf(uint32_T *u);
-extern void dlowpass2(SimStruct *rts);
 extern void ref3b(SimStruct *rts);
 extern void ec_Supervisor(SimStruct *rts);
 extern void ec_Ebox(SimStruct *rts);
 extern void dleadlag(SimStruct *rts);
+extern void dnotch(SimStruct *rts);
+extern void dlowpass2(SimStruct *rts);
 
 #endif                                 /* FORCE_model_private_h_ */

@@ -2,7 +2,7 @@
 clear;
 clc;
 
-fig = openfig('2_3_point_4k_120sec_lp100.fig','invisible');
+fig = openfig('2_3_point_4k_180_move_26.fig','invisible');
 %% Find plotted lines
 ax = findobj(fig, 'Type', 'Axes');
 stairsObj = findobj(ax, 'Type', 'Stair');
@@ -18,13 +18,12 @@ FRF.d = stairsObj(3).YData(:);
 
 %% Measurement Constants
 fs = 4000;                               %% Insert actual sampling freq! 
-Ts = 1/fs;
 L = length(FRF.u);
 %% PSD/CPSD Constants
 
-NrWin = 100;
-nfft = L/NrWin;                                      %% Window length [# samples]
-noverlap = .5*nfft;                                   %% Nr of overlapped samples [# samples]
+NrWin = 150;
+nfft = round(L/NrWin);                                      %% Window length [# samples]
+noverlap = round(.5*nfft);                                   %% Nr of overlapped samples [# samples]
 
 [PSD.Sud, hz] = cpsd(FRF.u, FRF.d,hann(nfft),noverlap,nfft,fs);
 PSD.Sdd = pwelch(FRF.d,hann(nfft),noverlap,nfft,fs);
@@ -95,7 +94,7 @@ ylabel('Coherence', Interpreter='latex')
 %% Transfer Function Estimation
 
 H = PS./S;
-H = abs(H).*exp(1i*(angle(H) - pi));
+% H = abs(H).*exp(1i*(angle(H) - pi));
 
 H_mag = 20*log10(abs(H));
 H_ph = angle(H) * (180/pi);
@@ -111,4 +110,6 @@ subplot(2,1,2)
 semilogx(hz,H_ph)
 xlabel("Frequency [Hz]",Interpreter="latex")
 ylabel('Angle [deg]',Interpreter="latex")
+grid on;
 % xlim([1 300])
+

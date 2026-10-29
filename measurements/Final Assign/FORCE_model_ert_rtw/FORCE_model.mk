@@ -2,7 +2,7 @@
 ## Makefile generated for component 'FORCE_model'. 
 ## 
 ## Makefile     : FORCE_model.mk
-## Generated on : Tue Oct 13 12:34:36 2026
+## Generated on : Thu Oct 29 13:35:18 2026
 ## Final product: $(RELATIVE_PATH_TO_ANCHOR)/FORCE_model.elf
 ## Product type : executable
 ## 
@@ -182,7 +182,7 @@ DEFINES = $(DEFINES_) $(DEFINES_BUILD_ARGS) $(DEFINES_CUSTOM) $(DEFINES_OPTS) $(
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/ext_mode/src/xcp_ext_mode.c $(MATLAB_ROOT)/rtw/c/src/rt_matrx.c $(MATLAB_ROOT)/rtw/c/src/rt_printf.c $(START_DIR)/FORCE_model_ert_rtw/FORCE_model.c $(START_DIR)/FORCE_model_ert_rtw/FORCE_model_data.c $(START_DIR)/FORCE_model_ert_rtw/rtGetInf.c $(START_DIR)/FORCE_model_ert_rtw/rtGetNaN.c $(START_DIR)/FORCE_model_ert_rtw/rt_nonfinite.c $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/SPERTE_Blocks/target/MW_custom_RTOS.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/ext_mode/src/xcp_ext_common.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/ext_mode/src/xcp_ext_classic_trigger.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/protocol/src/xcp.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/protocol/src/xcp_standard.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/protocol/src/xcp_daq.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/protocol/src/xcp_calibration.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/transport/src/xcp_fifo.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/transport/src/xcp_transport.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/platform/default/xcp_mem_default.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/platform/default/xcp_drv_rtiostream.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/common/xcp_utils.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/transport/src/xcp_frame_tcp.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/ext_mode/src/xcp_ext_param_default_tcp.c $(MATLAB_ROOT)/toolbox/shapeit/dleadlag.c $(MATLAB_ROOT)/toolbox/shapeit/dlowpass2.c $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/SPERTE_Blocks/sfunctions/ec/ec_Ebox.c $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/SPERTE_Blocks/sfunctions/ec/ec_Supervisor.c $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/ref3ma/ref3b.c $(MATLAB_WORKSPACE)/C/ProgramData/MATLAB/SupportPackages/R2025b/toolbox/realtime/targets/raspi/src/MW_raspi_init.c $(MATLAB_WORKSPACE)/C/ProgramData/MATLAB/SupportPackages/R2025b/toolbox/realtime/targets/raspi/src/periphs/MW_Pyserver_control.c $(MATLAB_WORKSPACE)/C/ProgramData/MATLAB/SupportPackages/R2025b/toolbox/realtime/targets/raspi/src/linuxtimelogger/linuxTimeLogger.c $(MATLAB_ROOT)/rtw/c/src/ext_mode/common/rtiostream_interface.c $(MATLAB_ROOT)/toolbox/coder/rtiostream/src/rtiostreamtcpip/rtiostream_tcpip.c $(MATLAB_ROOT)/toolbox/coder/rtiostream/src/utils/rtiostream_utils.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/platform/default/xcp_platform_default.c $(START_DIR)/FORCE_model_ert_rtw/SPERTE_linuxinitialize.c
+SRCS = $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/ext_mode/src/xcp_ext_mode.c $(MATLAB_ROOT)/rtw/c/src/rt_matrx.c $(MATLAB_ROOT)/rtw/c/src/rt_printf.c $(START_DIR)/FORCE_model_ert_rtw/FORCE_model.c $(START_DIR)/FORCE_model_ert_rtw/FORCE_model_data.c $(START_DIR)/FORCE_model_ert_rtw/rtGetInf.c $(START_DIR)/FORCE_model_ert_rtw/rtGetNaN.c $(START_DIR)/FORCE_model_ert_rtw/rt_nonfinite.c $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/SPERTE_Blocks/target/MW_custom_RTOS.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/ext_mode/src/xcp_ext_common.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/ext_mode/src/xcp_ext_classic_trigger.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/protocol/src/xcp.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/protocol/src/xcp_standard.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/protocol/src/xcp_daq.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/protocol/src/xcp_calibration.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/transport/src/xcp_fifo.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/transport/src/xcp_transport.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/platform/default/xcp_mem_default.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/platform/default/xcp_drv_rtiostream.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/common/xcp_utils.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/transport/src/xcp_frame_tcp.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/ext_mode/src/xcp_ext_param_default_tcp.c $(MATLAB_ROOT)/toolbox/shapeit/dleadlag.c $(MATLAB_ROOT)/toolbox/shapeit/dlowpass2.c $(MATLAB_ROOT)/toolbox/shapeit/dnotch.c $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/SPERTE_Blocks/sfunctions/ec/ec_Ebox.c $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/SPERTE_Blocks/sfunctions/ec/ec_Supervisor.c $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/ref3ma/ref3b.c $(MATLAB_WORKSPACE)/C/ProgramData/MATLAB/SupportPackages/R2025b/toolbox/realtime/targets/raspi/src/MW_raspi_init.c $(MATLAB_WORKSPACE)/C/ProgramData/MATLAB/SupportPackages/R2025b/toolbox/realtime/targets/raspi/src/periphs/MW_Pyserver_control.c $(MATLAB_WORKSPACE)/C/ProgramData/MATLAB/SupportPackages/R2025b/toolbox/realtime/targets/raspi/src/linuxtimelogger/linuxTimeLogger.c $(MATLAB_ROOT)/rtw/c/src/ext_mode/common/rtiostream_interface.c $(MATLAB_ROOT)/toolbox/coder/rtiostream/src/rtiostreamtcpip/rtiostream_tcpip.c $(MATLAB_ROOT)/toolbox/coder/rtiostream/src/utils/rtiostream_utils.c $(MATLAB_ROOT)/toolbox/coder/xcp/src/target/server/platform/default/xcp_platform_default.c $(START_DIR)/FORCE_model_ert_rtw/SPERTE_linuxinitialize.c
 
 MAIN_SRC = $(START_DIR)/FORCE_model_ert_rtw/ert_main.c
 
@@ -192,7 +192,7 @@ ALL_SRCS = $(SRCS) $(MAIN_SRC)
 ## OBJECTS
 ###########################################################################
 
-OBJS = xcp_ext_mode.c.o rt_matrx.c.o rt_printf.c.o FORCE_model.c.o FORCE_model_data.c.o rtGetInf.c.o rtGetNaN.c.o rt_nonfinite.c.o MW_custom_RTOS.c.o xcp_ext_common.c.o xcp_ext_classic_trigger.c.o xcp.c.o xcp_standard.c.o xcp_daq.c.o xcp_calibration.c.o xcp_fifo.c.o xcp_transport.c.o xcp_mem_default.c.o xcp_drv_rtiostream.c.o xcp_utils.c.o xcp_frame_tcp.c.o xcp_ext_param_default_tcp.c.o dleadlag.c.o dlowpass2.c.o ec_Ebox.c.o ec_Supervisor.c.o ref3b.c.o MW_raspi_init.c.o MW_Pyserver_control.c.o linuxTimeLogger.c.o rtiostream_interface.c.o rtiostream_tcpip.c.o rtiostream_utils.c.o xcp_platform_default.c.o SPERTE_linuxinitialize.c.o
+OBJS = xcp_ext_mode.c.o rt_matrx.c.o rt_printf.c.o FORCE_model.c.o FORCE_model_data.c.o rtGetInf.c.o rtGetNaN.c.o rt_nonfinite.c.o MW_custom_RTOS.c.o xcp_ext_common.c.o xcp_ext_classic_trigger.c.o xcp.c.o xcp_standard.c.o xcp_daq.c.o xcp_calibration.c.o xcp_fifo.c.o xcp_transport.c.o xcp_mem_default.c.o xcp_drv_rtiostream.c.o xcp_utils.c.o xcp_frame_tcp.c.o xcp_ext_param_default_tcp.c.o dleadlag.c.o dlowpass2.c.o dnotch.c.o ec_Ebox.c.o ec_Supervisor.c.o ref3b.c.o MW_raspi_init.c.o MW_Pyserver_control.c.o linuxTimeLogger.c.o rtiostream_interface.c.o rtiostream_tcpip.c.o rtiostream_utils.c.o xcp_platform_default.c.o SPERTE_linuxinitialize.c.o
 
 MAIN_OBJ = ert_main.c.o
 
@@ -369,18 +369,6 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(LIBS) $(MAIN_OBJ)
 	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
-%.c.o : $(MATLAB_ROOT)/toolbox/shapeit/%.c
-	$(CC) $(CFLAGS) -o "$@" "$<"
-
-
-%.s.o : $(MATLAB_ROOT)/toolbox/shapeit/%.s
-	$(AS) $(ASFLAGS) -o "$@" "$<"
-
-
-%.cpp.o : $(MATLAB_ROOT)/toolbox/shapeit/%.cpp
-	$(CPP) $(CPPFLAGS) -o "$@" "$<"
-
-
 %.c.o : $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/SPERTE_Blocks/sfunctions/ec/%.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
@@ -390,6 +378,18 @@ $(PRODUCT) : $(OBJS) $(PREBUILT_OBJS) $(LIBS) $(MAIN_OBJ)
 
 
 %.cpp.o : $(MATLAB_WORKSPACE)/C/Users/Sjoerd.DESKTOP-7OUK608/AppData/Roaming/MathWorks/MATLAB_Add-Ons/Toolboxes/SPERTE/Tooling/Simulink_Lib/SPERTE_Blocks/sfunctions/ec/%.cpp
+	$(CPP) $(CPPFLAGS) -o "$@" "$<"
+
+
+%.c.o : $(MATLAB_ROOT)/toolbox/shapeit/%.c
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+%.s.o : $(MATLAB_ROOT)/toolbox/shapeit/%.s
+	$(AS) $(ASFLAGS) -o "$@" "$<"
+
+
+%.cpp.o : $(MATLAB_ROOT)/toolbox/shapeit/%.cpp
 	$(CPP) $(CPPFLAGS) -o "$@" "$<"
 
 
@@ -622,6 +622,10 @@ dleadlag.c.o : $(MATLAB_ROOT)/toolbox/shapeit/dleadlag.c
 
 
 dlowpass2.c.o : $(MATLAB_ROOT)/toolbox/shapeit/dlowpass2.c
+	$(CC) $(CFLAGS) -o "$@" "$<"
+
+
+dnotch.c.o : $(MATLAB_ROOT)/toolbox/shapeit/dnotch.c
 	$(CC) $(CFLAGS) -o "$@" "$<"
 
 

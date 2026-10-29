@@ -4,7 +4,7 @@
  * Code generation for Simulink model "FORCE_model".
  *
  * Simulink Coder version                : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Tue Oct 13 12:38:03 2026
+ * C source code generated on : Thu Oct 29 13:35:14 2026
  *
  * Note that the generated code is not dependent on this header file.
  * The file is used in cojuction with the automatic build procedure.
