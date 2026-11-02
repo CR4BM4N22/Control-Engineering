@@ -9,7 +9,7 @@
  *
  * Model version              : 15.61
  * Simulink Coder version : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Mon Nov  2 13:41:49 2026
+ * C source code generated on : Mon Nov  2 13:45:44 2026
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-A (64-bit)
@@ -33,9 +33,8 @@
 
 #include "FORCE_model_types.h"
 #include <stddef.h>
-#include "rt_nonfinite.h"
-#include "rtGetNaN.h"
 #include <string.h>
+#include "rt_nonfinite.h"
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetContTimeOutputInconsistentWithStateAtMajorStepFlag
@@ -144,7 +143,6 @@ typedef struct {
   real_T Dctleadlag2;                  /* '<S8>/Dctleadlag2' */
   real_T Dctnotch3;                    /* '<S8>/Dctnotch3' */
   real_T Dct2lowpass4;                 /* '<S8>/Dct2lowpass4' */
-  real_T Dctnotch5;                    /* '<S8>/Dctnotch5' */
   real_T Saturation[2];                /* '<S9>/Saturation' */
   real_T Gain[2];                      /* '<S9>/Gain' */
   real_T Constant1[8];                 /* '<S3>/Constant1' */
@@ -161,7 +159,6 @@ typedef struct {
   real_T Dctleadlag2_RWORK[2];         /* '<S8>/Dctleadlag2' */
   real_T Dctnotch3_RWORK[4];           /* '<S8>/Dctnotch3' */
   real_T Dct2lowpass4_RWORK[4];        /* '<S8>/Dct2lowpass4' */
-  real_T Dctnotch5_RWORK[4];           /* '<S8>/Dctnotch5' */
   struct {
     void *LoggedData;
   } Live_Scope_PWORK;                  /* '<S5>/Live_Scope' */
@@ -180,7 +177,7 @@ struct P_FORCE_model_T_ {
   real_T SFunction_P1_Size[2];         /* Computed Parameter: SFunction_P1_Size
                                         * Referenced by: '<S7>/S-Function'
                                         */
-  real_T ref_part[18];                 /* Variable: ref_part
+  real_T ref_part[12];                 /* Variable: ref_part
                                         * Referenced by: '<S7>/S-Function'
                                         */
   real_T Refpower_stat;                /* Mask Parameter: Refpower_stat
@@ -233,15 +230,6 @@ struct P_FORCE_model_T_ {
                                         */
   real_T Noise_Seed;                   /* Expression: 0
                                         * Referenced by: '<Root>/Noise'
-                                        */
-  real_T Gain_Gain_j;                  /* Expression: 0.0004
-                                        * Referenced by: '<S2>/Gain'
-                                        */
-  real_T Fvforwards_Gain;              /* Expression: 0.00009
-                                        * Referenced by: '<S2>/Fv forwards'
-                                        */
-  real_T Fcforwards_Gain;              /* Expression: 0.002
-                                        * Referenced by: '<S2>/Fc forwards'
                                         */
   real_T Gain1_Gain;                   /* Expression: 0.5
                                         * Referenced by: '<S8>/Gain1'
@@ -312,36 +300,6 @@ struct P_FORCE_model_T_ {
   real_T Dct2lowpass4_P3;              /* Expression: 0.001
                                         * Referenced by: '<S8>/Dct2lowpass4'
                                         */
-  real_T Dctnotch5_P1_Size[2];         /* Computed Parameter: Dctnotch5_P1_Size
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
-  real_T Dctnotch5_P1;                 /* Expression: f_num
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
-  real_T Dctnotch5_P2_Size[2];         /* Computed Parameter: Dctnotch5_P2_Size
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
-  real_T Dctnotch5_P2;                 /* Expression: b_num
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
-  real_T Dctnotch5_P3_Size[2];         /* Computed Parameter: Dctnotch5_P3_Size
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
-  real_T Dctnotch5_P3;                 /* Expression: f_den
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
-  real_T Dctnotch5_P4_Size[2];         /* Computed Parameter: Dctnotch5_P4_Size
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
-  real_T Dctnotch5_P4;                 /* Expression: b_den
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
-  real_T Dctnotch5_P5_Size[2];         /* Computed Parameter: Dctnotch5_P5_Size
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
-  real_T Dctnotch5_P5;                 /* Expression: 0.001
-                                        * Referenced by: '<S8>/Dctnotch5'
-                                        */
   real_T Constant2_Value;              /* Expression: 0
                                         * Referenced by: '<S3>/Constant2'
                                         */
@@ -393,15 +351,15 @@ struct tag_RTM_FORCE_model_T {
   struct {
     RTWSfcnInfo sfcnInfo;
     time_T *taskTimePtrs[3];
-    SimStruct childSFunctions[7];
-    SimStruct *childSFunctionPtrs[7];
-    struct _ssBlkInfo2 blkInfo2[7];
-    struct _ssSFcnModelMethods2 methods2[7];
-    struct _ssSFcnModelMethods3 methods3[7];
-    struct _ssSFcnModelMethods4 methods4[7];
-    struct _ssStatesInfo2 statesInfo2[7];
-    ssPeriodicStatesInfo periodicStatesInfo[7];
-    struct _ssPortInfo2 inputOutputPortInfo2[7];
+    SimStruct childSFunctions[6];
+    SimStruct *childSFunctionPtrs[6];
+    struct _ssBlkInfo2 blkInfo2[6];
+    struct _ssSFcnModelMethods2 methods2[6];
+    struct _ssSFcnModelMethods3 methods3[6];
+    struct _ssSFcnModelMethods4 methods4[6];
+    struct _ssStatesInfo2 statesInfo2[6];
+    ssPeriodicStatesInfo periodicStatesInfo[6];
+    struct _ssPortInfo2 inputOutputPortInfo2[6];
     struct {
       time_T sfcnPeriod[1];
       time_T sfcnOffset[1];
@@ -497,23 +455,6 @@ struct tag_RTM_FORCE_model_T {
       struct _ssDWorkRecord dWork[1];
       struct _ssDWorkAuxRecord dWorkAux[1];
     } Sfcn5;
-
-    struct {
-      time_T sfcnPeriod[1];
-      time_T sfcnOffset[1];
-      int_T sfcnTsMap[1];
-      struct _ssPortInputs inputPortInfo[1];
-      struct _ssInPortUnit inputPortUnits[1];
-      struct _ssInPortCoSimAttribute inputPortCoSimAttribute[1];
-      real_T const *UPtrs0[1];
-      struct _ssPortOutputs outputPortInfo[1];
-      struct _ssOutPortUnit outputPortUnits[1];
-      struct _ssOutPortCoSimAttribute outputPortCoSimAttribute[1];
-      uint_T attribs[5];
-      mxArray *params[5];
-      struct _ssDWorkRecord dWork[1];
-      struct _ssDWorkAuxRecord dWorkAux[1];
-    } Sfcn6;
   } NonInlinedSFcns;
 
   boolean_T zCCacheNeedsReset;
@@ -618,6 +559,16 @@ extern void FORCE_model_terminate(void);
 extern RT_MODEL_FORCE_model_T *const FORCE_model_M;
 extern volatile boolean_T stopRequested;
 extern volatile boolean_T runModel;
+
+/*-
+ * These blocks were eliminated from the model due to optimizations:
+ *
+ * Block '<S2>/Add' : Unused code path elimination
+ * Block '<S2>/Fc forwards' : Unused code path elimination
+ * Block '<S2>/Fv forwards' : Unused code path elimination
+ * Block '<S2>/Gain' : Unused code path elimination
+ * Block '<S2>/Sign' : Unused code path elimination
+ */
 
 /*-
  * The generated code includes comments that allow you to trace directly

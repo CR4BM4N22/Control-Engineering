@@ -9,7 +9,7 @@
  *
  * Model version              : 15.61
  * Simulink Coder version : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Mon Nov  2 13:41:49 2026
+ * C source code generated on : Mon Nov  2 13:45:44 2026
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-A (64-bit)
@@ -21,11 +21,11 @@
 #include "FORCE_model_types.h"
 #include "rtwtypes.h"
 #include "FORCE_model_private.h"
-#include "rt_nonfinite.h"
 #include <string.h>
 #include <stdio.h>
 #include <stddef.h>
 #include <math.h>
+#include "rt_nonfinite.h"
 #include <stdlib.h>
 
 /* Block signals (default storage) */
@@ -446,35 +446,10 @@ void FORCE_model_step0(void)           /* Sample time: [0.0s, 0.0s] */
     sfcnOutputs(rts,0);
   }
 
-  /* S-Function (dnotch): '<S8>/Dctnotch5' */
-
-  /* Level2 S-Function Block: '<S8>/Dctnotch5' (dnotch) */
-  {
-    SimStruct *rts = FORCE_model_M->childSfunctions[6];
-    sfcnOutputs(rts,0);
-  }
-
-  /* Signum: '<S2>/Sign' */
-  if (rtIsNaN(FORCE_model_B.SFunction[1])) {
-    rtb_u = (rtNaN);
-  } else if (FORCE_model_B.SFunction[1] < 0.0) {
-    rtb_u = -1.0;
-  } else {
-    rtb_u = (FORCE_model_B.SFunction[1] > 0.0);
-  }
-
   /* Sum: '<Root>/Sum1' incorporates:
-   *  Gain: '<S2>/Fc forwards'
-   *  Gain: '<S2>/Fv forwards'
-   *  Gain: '<S2>/Gain'
    *  RandomNumber: '<Root>/Noise'
-   *  Signum: '<S2>/Sign'
-   *  Sum: '<S2>/Add'
    */
-  rtb_u = (((FORCE_model_P.Gain_Gain_j * FORCE_model_B.SFunction[0] +
-             FORCE_model_P.Fvforwards_Gain * FORCE_model_B.SFunction[1]) +
-            FORCE_model_P.Fcforwards_Gain * rtb_u) + FORCE_model_DW.NextOutput)
-    + FORCE_model_B.Dctnotch5;
+  rtb_u = FORCE_model_DW.NextOutput + FORCE_model_B.Dct2lowpass4;
 
   /* MATLAB Function: '<S4>/SPERTE_measurement_function' incorporates:
    *  Constant: '<Root>/Manual Trigger'
@@ -781,15 +756,15 @@ void FORCE_model_initialize(void)
     FORCE_model_M->Timing.sampleHits = (&mdlSampleHits[0]);
   }
 
-  rtmSetTFinal(FORCE_model_M, 10.936);
+  rtmSetTFinal(FORCE_model_M, 0.77);
   FORCE_model_M->Timing.stepSize0 = 0.00025;
   FORCE_model_M->Timing.stepSize1 = 0.00025;
 
   /* External mode info */
-  FORCE_model_M->Sizes.checksums[0] = (1762569501U);
-  FORCE_model_M->Sizes.checksums[1] = (1234763814U);
-  FORCE_model_M->Sizes.checksums[2] = (1227437171U);
-  FORCE_model_M->Sizes.checksums[3] = (3223651909U);
+  FORCE_model_M->Sizes.checksums[0] = (3799965800U);
+  FORCE_model_M->Sizes.checksums[1] = (2571453235U);
+  FORCE_model_M->Sizes.checksums[2] = (563853387U);
+  FORCE_model_M->Sizes.checksums[3] = (3803944743U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -851,18 +826,18 @@ void FORCE_model_initialize(void)
     rtssSetSolverInfoPtr(sfcnInfo, &FORCE_model_M->solverInfoPtr);
   }
 
-  FORCE_model_M->Sizes.numSFcns = (7);
+  FORCE_model_M->Sizes.numSFcns = (6);
 
   /* register each child */
   {
     (void) memset((void *)&FORCE_model_M->NonInlinedSFcns.childSFunctions[0], 0,
-                  7*sizeof(SimStruct));
+                  6*sizeof(SimStruct));
     FORCE_model_M->childSfunctions =
       (&FORCE_model_M->NonInlinedSFcns.childSFunctionPtrs[0]);
 
     {
       int_T i;
-      for (i = 0; i < 7; i++) {
+      for (i = 0; i < 6; i++) {
         FORCE_model_M->childSfunctions[i] =
           (&FORCE_model_M->NonInlinedSFcns.childSFunctions[i]);
       }
@@ -1301,9 +1276,9 @@ void FORCE_model_initialize(void)
       sfcnInitializeSampleTimes(rts);
 
       /* adjust sample time */
-      ssSetSampleTime(rts, 0, 0.0);
+      ssSetSampleTime(rts, 0, 0.00025);
       ssSetOffsetTime(rts, 0, 0.0);
-      sfcnTsMap[0] = 0;
+      sfcnTsMap[0] = 1;
 
       /* set compiled values of dynamic vector attributes */
       ssSetNumNonsampledZCsAsInt(rts, 0);
@@ -1791,163 +1766,6 @@ void FORCE_model_initialize(void)
       /* Update the BufferDstPort flags for each input port */
       ssSetInputPortBufferDstPort(rts, 0, -1);
     }
-
-    /* Level2 S-Function Block: FORCE_model/<S8>/Dctnotch5 (dnotch) */
-    {
-      SimStruct *rts = FORCE_model_M->childSfunctions[6];
-
-      /* timing info */
-      time_T *sfcnPeriod = FORCE_model_M->NonInlinedSFcns.Sfcn6.sfcnPeriod;
-      time_T *sfcnOffset = FORCE_model_M->NonInlinedSFcns.Sfcn6.sfcnOffset;
-      int_T *sfcnTsMap = FORCE_model_M->NonInlinedSFcns.Sfcn6.sfcnTsMap;
-      (void) memset((void*)sfcnPeriod, 0,
-                    sizeof(time_T)*1);
-      (void) memset((void*)sfcnOffset, 0,
-                    sizeof(time_T)*1);
-      ssSetSampleTimePtr(rts, &sfcnPeriod[0]);
-      ssSetOffsetTimePtr(rts, &sfcnOffset[0]);
-      ssSetSampleTimeTaskIDPtr(rts, sfcnTsMap);
-
-      {
-        ssSetBlkInfo2Ptr(rts, &FORCE_model_M->NonInlinedSFcns.blkInfo2[6]);
-      }
-
-      _ssSetBlkInfo2PortInfo2Ptr(rts,
-        &FORCE_model_M->NonInlinedSFcns.inputOutputPortInfo2[6]);
-
-      /* Set up the mdlInfo pointer */
-      ssSetRTWSfcnInfo(rts, FORCE_model_M->sfcnInfo);
-
-      /* Allocate memory of model methods 2 */
-      {
-        ssSetModelMethods2(rts, &FORCE_model_M->NonInlinedSFcns.methods2[6]);
-      }
-
-      /* Allocate memory of model methods 3 */
-      {
-        ssSetModelMethods3(rts, &FORCE_model_M->NonInlinedSFcns.methods3[6]);
-      }
-
-      /* Allocate memory of model methods 4 */
-      {
-        ssSetModelMethods4(rts, &FORCE_model_M->NonInlinedSFcns.methods4[6]);
-      }
-
-      /* Allocate memory for states auxilliary information */
-      {
-        ssSetStatesInfo2(rts, &FORCE_model_M->NonInlinedSFcns.statesInfo2[6]);
-        ssSetPeriodicStatesInfo(rts,
-          &FORCE_model_M->NonInlinedSFcns.periodicStatesInfo[6]);
-      }
-
-      /* inputs */
-      {
-        _ssSetNumInputPorts(rts, 1);
-        ssSetPortInfoForInputs(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.inputPortInfo[0]);
-        ssSetPortInfoForInputs(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.inputPortInfo[0]);
-        _ssSetPortInfo2ForInputUnits(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.inputPortUnits[0]);
-        ssSetInputPortUnit(rts, 0, 0);
-        _ssSetPortInfo2ForInputCoSimAttribute(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.inputPortCoSimAttribute[0]);
-        ssSetInputPortIsContinuousQuantity(rts, 0, 0);
-
-        /* port 0 */
-        {
-          real_T const **sfcnUPtrs = (real_T const **)
-            &FORCE_model_M->NonInlinedSFcns.Sfcn6.UPtrs0;
-          sfcnUPtrs[0] = &FORCE_model_B.Dct2lowpass4;
-          ssSetInputPortSignalPtrs(rts, 0, (InputPtrsType)&sfcnUPtrs[0]);
-          _ssSetInputPortNumDimensions(rts, 0, 1);
-          ssSetInputPortWidthAsInt(rts, 0, 1);
-        }
-      }
-
-      /* outputs */
-      {
-        ssSetPortInfoForOutputs(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.outputPortInfo[0]);
-        ssSetPortInfoForOutputs(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.outputPortInfo[0]);
-        _ssSetNumOutputPorts(rts, 1);
-        _ssSetPortInfo2ForOutputUnits(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.outputPortUnits[0]);
-        ssSetOutputPortUnit(rts, 0, 0);
-        _ssSetPortInfo2ForOutputCoSimAttribute(rts,
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.outputPortCoSimAttribute[0]);
-        ssSetOutputPortIsContinuousQuantity(rts, 0, 0);
-
-        /* port 0 */
-        {
-          _ssSetOutputPortNumDimensions(rts, 0, 1);
-          ssSetOutputPortWidthAsInt(rts, 0, 1);
-          ssSetOutputPortSignal(rts, 0, ((real_T *) &FORCE_model_B.Dctnotch5));
-        }
-      }
-
-      /* path info */
-      ssSetModelName(rts, "Dctnotch5");
-      ssSetPath(rts, "FORCE_model/Controller (motor side)/temp/Dctnotch5");
-      ssSetRTModel(rts,FORCE_model_M);
-      ssSetParentSS(rts, (NULL));
-      ssSetRootSS(rts, rts);
-      ssSetVersion(rts, SIMSTRUCT_VERSION_LEVEL2);
-
-      /* parameters */
-      {
-        mxArray **sfcnParams = (mxArray **)
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.params;
-        ssSetSFcnParamsCount(rts, 5);
-        ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
-        ssSetSFcnParam(rts, 0, (mxArray*)FORCE_model_P.Dctnotch5_P1_Size);
-        ssSetSFcnParam(rts, 1, (mxArray*)FORCE_model_P.Dctnotch5_P2_Size);
-        ssSetSFcnParam(rts, 2, (mxArray*)FORCE_model_P.Dctnotch5_P3_Size);
-        ssSetSFcnParam(rts, 3, (mxArray*)FORCE_model_P.Dctnotch5_P4_Size);
-        ssSetSFcnParam(rts, 4, (mxArray*)FORCE_model_P.Dctnotch5_P5_Size);
-      }
-
-      /* work vectors */
-      ssSetRWork(rts, (real_T *) &FORCE_model_DW.Dctnotch5_RWORK[0]);
-
-      {
-        struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.dWork;
-        struct _ssDWorkAuxRecord *dWorkAuxRecord = (struct _ssDWorkAuxRecord *)
-          &FORCE_model_M->NonInlinedSFcns.Sfcn6.dWorkAux;
-        ssSetSFcnDWork(rts, dWorkRecord);
-        ssSetSFcnDWorkAux(rts, dWorkAuxRecord);
-        ssSetNumDWorkAsInt(rts, 1);
-
-        /* RWORK */
-        ssSetDWorkWidthAsInt(rts, 0, 4);
-        ssSetDWorkDataType(rts, 0,SS_DOUBLE);
-        ssSetDWorkComplexSignal(rts, 0, 0);
-        ssSetDWork(rts, 0, &FORCE_model_DW.Dctnotch5_RWORK[0]);
-      }
-
-      /* registration */
-      dnotch(rts);
-      sfcnInitializeSizes(rts);
-      sfcnInitializeSampleTimes(rts);
-
-      /* adjust sample time */
-      ssSetSampleTime(rts, 0, 0.00025);
-      ssSetOffsetTime(rts, 0, 0.0);
-      sfcnTsMap[0] = 1;
-
-      /* set compiled values of dynamic vector attributes */
-      ssSetNumNonsampledZCsAsInt(rts, 0);
-
-      /* Update connectivity flags for each port */
-      _ssSetInputPortConnected(rts, 0, 1);
-      _ssSetOutputPortConnected(rts, 0, 1);
-      _ssSetOutputPortBeingMerged(rts, 0, 0);
-
-      /* Update the BufferDstPort flags for each input port */
-      ssSetInputPortBufferDstPort(rts, 0, -1);
-    }
   }
 
   {
@@ -1991,15 +1809,6 @@ void FORCE_model_initialize(void)
     /* Level2 S-Function Block: '<S8>/Dct2lowpass4' (dlowpass2) */
     {
       SimStruct *rts = FORCE_model_M->childSfunctions[5];
-      sfcnStart(rts);
-      if (ssGetErrorStatus(rts) != (NULL))
-        return;
-    }
-
-    /* Start for S-Function (dnotch): '<S8>/Dctnotch5' */
-    /* Level2 S-Function Block: '<S8>/Dctnotch5' (dnotch) */
-    {
-      SimStruct *rts = FORCE_model_M->childSfunctions[6];
       sfcnStart(rts);
       if (ssGetErrorStatus(rts) != (NULL))
         return;
@@ -2102,13 +1911,6 @@ void FORCE_model_terminate(void)
   /* Level2 S-Function Block: '<S8>/Dct2lowpass4' (dlowpass2) */
   {
     SimStruct *rts = FORCE_model_M->childSfunctions[5];
-    sfcnTerminate(rts);
-  }
-
-  /* Terminate for S-Function (dnotch): '<S8>/Dctnotch5' */
-  /* Level2 S-Function Block: '<S8>/Dctnotch5' (dnotch) */
-  {
-    SimStruct *rts = FORCE_model_M->childSfunctions[6];
     sfcnTerminate(rts);
   }
 }

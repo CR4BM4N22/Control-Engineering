@@ -9,7 +9,7 @@
  *
  * Model version              : 15.61
  * Simulink Coder version : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Mon Nov  2 13:41:49 2026
+ * C source code generated on : Mon Nov  2 13:45:44 2026
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-A (64-bit)
@@ -24,13 +24,13 @@ P_FORCE_model_T FORCE_model_P = {
   /* Computed Parameter: SFunction_P1_Size
    * Referenced by: '<S7>/S-Function'
    */
-  { 3.0, 6.0 },
+  { 2.0, 6.0 },
 
   /* Variable: ref_part
    * Referenced by: '<S7>/S-Function'
    */
-  { 0.0, 124.6, 0.0, 0.0, 5.4679, -1.0, 124.6, 0.0, 0.0, 23.196, 23.196, 0.0,
-    0.096325000000000008, 0.096325000000000008, 0.0, 10000.0, 10000.0, 0.0 },
+  { 0.0, 6.0, 0.05, 0.40506, 6.0, 0.0, 23.196, 23.196, 0.096399352051835849,
+    0.096399352051835849, 10000.0, 10000.0 },
 
   /* Mask Parameter: Refpower_stat
    * Referenced by: '<S6>/Start setpoint'
@@ -111,21 +111,6 @@ P_FORCE_model_T FORCE_model_P = {
    * Referenced by: '<Root>/Noise'
    */
   0.0,
-
-  /* Expression: 0.0004
-   * Referenced by: '<S2>/Gain'
-   */
-  0.0004,
-
-  /* Expression: 0.00009
-   * Referenced by: '<S2>/Fv forwards'
-   */
-  9.0E-5,
-
-  /* Expression: 0.002
-   * Referenced by: '<S2>/Fc forwards'
-   */
-  0.002,
 
   /* Expression: 0.5
    * Referenced by: '<S8>/Gain1'
@@ -239,56 +224,6 @@ P_FORCE_model_T FORCE_model_P = {
 
   /* Expression: 0.001
    * Referenced by: '<S8>/Dct2lowpass4'
-   */
-  0.001,
-
-  /* Computed Parameter: Dctnotch5_P1_Size
-   * Referenced by: '<S8>/Dctnotch5'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: f_num
-   * Referenced by: '<S8>/Dctnotch5'
-   */
-  3.7,
-
-  /* Computed Parameter: Dctnotch5_P2_Size
-   * Referenced by: '<S8>/Dctnotch5'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: b_num
-   * Referenced by: '<S8>/Dctnotch5'
-   */
-  0.34,
-
-  /* Computed Parameter: Dctnotch5_P3_Size
-   * Referenced by: '<S8>/Dctnotch5'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: f_den
-   * Referenced by: '<S8>/Dctnotch5'
-   */
-  3.7,
-
-  /* Computed Parameter: Dctnotch5_P4_Size
-   * Referenced by: '<S8>/Dctnotch5'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: b_den
-   * Referenced by: '<S8>/Dctnotch5'
-   */
-  0.01,
-
-  /* Computed Parameter: Dctnotch5_P5_Size
-   * Referenced by: '<S8>/Dctnotch5'
-   */
-  { 1.0, 1.0 },
-
-  /* Expression: 0.001
-   * Referenced by: '<S8>/Dctnotch5'
    */
   0.001,
 
