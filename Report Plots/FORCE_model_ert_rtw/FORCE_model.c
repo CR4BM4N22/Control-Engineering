@@ -9,7 +9,7 @@
  *
  * Model version              : 15.61
  * Simulink Coder version : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Mon Nov  2 14:06:05 2026
+ * C source code generated on : Mon Nov  2 14:10:47 2026
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-A (64-bit)
@@ -816,10 +816,10 @@ void FORCE_model_initialize(void)
   FORCE_model_M->Timing.stepSize1 = 0.00025;
 
   /* External mode info */
-  FORCE_model_M->Sizes.checksums[0] = (3444798700U);
-  FORCE_model_M->Sizes.checksums[1] = (3262263399U);
-  FORCE_model_M->Sizes.checksums[2] = (1346852184U);
-  FORCE_model_M->Sizes.checksums[3] = (1274108658U);
+  FORCE_model_M->Sizes.checksums[0] = (1121918082U);
+  FORCE_model_M->Sizes.checksums[1] = (2278774157U);
+  FORCE_model_M->Sizes.checksums[2] = (2374196943U);
+  FORCE_model_M->Sizes.checksums[3] = (1215973535U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;

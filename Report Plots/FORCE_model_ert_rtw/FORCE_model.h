@@ -9,7 +9,7 @@
  *
  * Model version              : 15.61
  * Simulink Coder version : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Mon Nov  2 14:06:05 2026
+ * C source code generated on : Mon Nov  2 14:10:47 2026
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-A (64-bit)
@@ -180,7 +180,7 @@ struct P_FORCE_model_T_ {
   real_T SFunction_P1_Size[2];         /* Computed Parameter: SFunction_P1_Size
                                         * Referenced by: '<S7>/S-Function'
                                         */
-  real_T ref_part[12];                 /* Variable: ref_part
+  real_T ref_part[18];                 /* Variable: ref_part
                                         * Referenced by: '<S7>/S-Function'
                                         */
   real_T Refpower_stat;                /* Mask Parameter: Refpower_stat
