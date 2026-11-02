@@ -7,9 +7,9 @@
  *
  * Code generation for model "FORCE_model".
  *
- * Model version              : 15.52
+ * Model version              : 15.60
  * Simulink Coder version : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Thu Oct 29 13:35:14 2026
+ * C source code generated on : Mon Nov  2 12:54:32 2026
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-A (64-bit)
@@ -29,8 +29,8 @@ P_FORCE_model_T FORCE_model_P = {
   /* Variable: ref_part
    * Referenced by: '<S7>/S-Function'
    */
-  { 0.0, 1.0, 0.0, 0.05, 0.33933, -1.0, 1.0, 0.0, 0.0, 5.0, 5.0, 0.0,
-    0.08933333333333332, 0.08933333333333332, 0.0, 10000.0, 10000.0, 0.0 },
+  { 0.0, 124.0, 0.0, 0.0, 5.4421, -1.0, 124.0, 0.0, 0.0, 23.196, 23.196, 0.0,
+    0.096325000000000008, 0.096325000000000008, 0.0, 10000.0, 10000.0, 0.0 },
 
   /* Mask Parameter: Refpower_stat
    * Referenced by: '<S6>/Start setpoint'
@@ -40,7 +40,7 @@ P_FORCE_model_T FORCE_model_P = {
   /* Mask Parameter: MeasurementBlock_N_samples
    * Referenced by: '<S4>/SPERTE_measurement_samples'
    */
-  720000U,
+  40000U,
 
   /* Mask Parameter: MeasurementBlock_trigger_comman
    * Referenced by: '<S4>/SPERTE_measurement_trigger_command'
@@ -52,38 +52,58 @@ P_FORCE_model_T FORCE_model_P = {
    */
   2U,
 
+  /* Expression: 0.00009
+   * Referenced by: '<S9>/Fv forwards'
+   */
+  9.0E-5,
+
+  /* Expression: 0.0001
+   * Referenced by: '<S9>/Fv backwards'
+   */
+  0.0001,
+
+  /* Expression: 0.002
+   * Referenced by: '<S10>/Fc forwards'
+   */
+  0.002,
+
+  /* Expression: 0.008
+   * Referenced by: '<S10>/Fc backwards'
+   */
+  0.008,
+
   /* Expression: -1
    * Referenced by: '<S3>/Gain'
    */
   -1.0,
 
   /* Computed Parameter: SFunction_P1_Size_k
-   * Referenced by: '<S10>/S-Function'
+   * Referenced by: '<S12>/S-Function'
    */
   { 1.0, 1.0 },
 
   /* Expression: portid
-   * Referenced by: '<S10>/S-Function'
+   * Referenced by: '<S12>/S-Function'
    */
   0.0,
 
   /* Computed Parameter: SFunction_P2_Size
-   * Referenced by: '<S10>/S-Function'
+   * Referenced by: '<S12>/S-Function'
    */
   { 1.0, 1.0 },
 
   /* Expression: ectimeout
-   * Referenced by: '<S10>/S-Function'
+   * Referenced by: '<S12>/S-Function'
    */
   500.0,
 
   /* Computed Parameter: ec_Ebox_P1_Size
-   * Referenced by: '<S9>/ec_Ebox'
+   * Referenced by: '<S11>/ec_Ebox'
    */
   { 1.0, 1.0 },
 
   /* Expression: link_id
-   * Referenced by: '<S9>/ec_Ebox'
+   * Referenced by: '<S11>/ec_Ebox'
    */
   0.0,
 
@@ -112,25 +132,25 @@ P_FORCE_model_T FORCE_model_P = {
    */
   0.0,
 
-  /* Expression: 0.00028
+  /* Expression: 0.0004
    * Referenced by: '<S2>/Gain'
    */
-  0.00028,
+  0.0004,
 
-  /* Expression: 0.00068
-   * Referenced by: '<S2>/Gain1'
+  /* Expression: 0
+   * Referenced by: '<S9>/Switch'
    */
-  0.00068,
+  0.0,
 
-  /* Expression: 0.006
-   * Referenced by: '<S2>/Gain2'
+  /* Expression: 0
+   * Referenced by: '<S10>/Switch'
    */
-  0.006,
+  0.0,
 
-  /* Expression: 0.8
+  /* Expression: 0.5
    * Referenced by: '<S8>/Gain1'
    */
-  0.8,
+  0.5,
 
   /* Computed Parameter: Dctleadlag2_P1_Size
    * Referenced by: '<S8>/Dctleadlag2'
@@ -140,7 +160,7 @@ P_FORCE_model_T FORCE_model_P = {
   /* Expression: f_num
    * Referenced by: '<S8>/Dctleadlag2'
    */
-  5.0,
+  3.0,
 
   /* Computed Parameter: Dctleadlag2_P2_Size
    * Referenced by: '<S8>/Dctleadlag2'
@@ -150,7 +170,7 @@ P_FORCE_model_T FORCE_model_P = {
   /* Expression: f_den
    * Referenced by: '<S8>/Dctleadlag2'
    */
-  35.0,
+  45.0,
 
   /* Computed Parameter: Dctleadlag2_P3_Size
    * Referenced by: '<S8>/Dctleadlag2'
@@ -180,7 +200,7 @@ P_FORCE_model_T FORCE_model_P = {
   /* Expression: b_num
    * Referenced by: '<S8>/Dctnotch3'
    */
-  0.1,
+  0.075,
 
   /* Computed Parameter: Dctnotch3_P3_Size
    * Referenced by: '<S8>/Dctnotch3'
@@ -242,6 +262,56 @@ P_FORCE_model_T FORCE_model_P = {
    */
   0.001,
 
+  /* Computed Parameter: Dctnotch5_P1_Size
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: f_num
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  3.7,
+
+  /* Computed Parameter: Dctnotch5_P2_Size
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: b_num
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  0.34,
+
+  /* Computed Parameter: Dctnotch5_P3_Size
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: f_den
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  3.7,
+
+  /* Computed Parameter: Dctnotch5_P4_Size
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: b_den
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  0.01,
+
+  /* Computed Parameter: Dctnotch5_P5_Size
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  { 1.0, 1.0 },
+
+  /* Expression: 0.001
+   * Referenced by: '<S8>/Dctnotch5'
+   */
+  0.001,
+
   /* Expression: 0
    * Referenced by: '<S3>/Constant2'
    */
@@ -258,12 +328,12 @@ P_FORCE_model_T FORCE_model_P = {
   -2.5,
 
   /* Expression: 10
-   * Referenced by: '<S9>/Saturation'
+   * Referenced by: '<S11>/Saturation'
    */
   10.0,
 
   /* Expression: -10
-   * Referenced by: '<S9>/Saturation'
+   * Referenced by: '<S11>/Saturation'
    */
   -10.0,
 
@@ -273,7 +343,7 @@ P_FORCE_model_T FORCE_model_P = {
   { 0.0, 0.0 },
 
   /* Expression: 1/100
-   * Referenced by: '<S9>/Gain'
+   * Referenced by: '<S11>/Gain'
    */
   0.01,
 
