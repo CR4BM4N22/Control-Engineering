@@ -9,7 +9,7 @@
  *
  * Model version              : 15.61
  * Simulink Coder version : 25.2 (R2025b) 28-Jul-2025
- * C source code generated on : Mon Nov  2 13:45:44 2026
+ * C source code generated on : Mon Nov  2 14:06:05 2026
  *
  * Target selection: ert.tlc
  * Embedded hardware selection: ARM Compatible->ARM Cortex-A (64-bit)
@@ -33,8 +33,9 @@
 
 #include "FORCE_model_types.h"
 #include <stddef.h>
-#include <string.h>
 #include "rt_nonfinite.h"
+#include "rtGetNaN.h"
+#include <string.h>
 
 /* Macros for accessing real-time model data structure */
 #ifndef rtmGetContTimeOutputInconsistentWithStateAtMajorStepFlag
@@ -133,18 +134,19 @@
 typedef struct {
   real_T Startsetpoint;                /* '<S6>/Start setpoint' */
   real_T SFunction[3];                 /* '<S7>/S-Function' */
-  real_T SFunction_b;                  /* '<S10>/S-Function' */
-  real_T ec_Ebox_o1[2];                /* '<S9>/ec_Ebox' */
-  real_T ec_Ebox_o2[2];                /* '<S9>/ec_Ebox' */
-  real_T ec_Ebox_o3[8];                /* '<S9>/ec_Ebox' */
+  real_T SFunction_b;                  /* '<S12>/S-Function' */
+  real_T ec_Ebox_o1[2];                /* '<S11>/ec_Ebox' */
+  real_T ec_Ebox_o2[2];                /* '<S11>/ec_Ebox' */
+  real_T ec_Ebox_o3[8];                /* '<S11>/ec_Ebox' */
   real_T y;                            /* '<Root>/Select encoder' */
   real_T e;                            /* '<Root>/Sum' */
   real_T Gain1;                        /* '<S8>/Gain1' */
   real_T Dctleadlag2;                  /* '<S8>/Dctleadlag2' */
   real_T Dctnotch3;                    /* '<S8>/Dctnotch3' */
   real_T Dct2lowpass4;                 /* '<S8>/Dct2lowpass4' */
-  real_T Saturation[2];                /* '<S9>/Saturation' */
-  real_T Gain[2];                      /* '<S9>/Gain' */
+  real_T Dctnotch5;                    /* '<S8>/Dctnotch5' */
+  real_T Saturation[2];                /* '<S11>/Saturation' */
+  real_T Gain[2];                      /* '<S11>/Gain' */
   real_T Constant1[8];                 /* '<S3>/Constant1' */
   real_T Downsample[3];                /* '<S5>/Downsample' */
   uint8_T status;                      /* '<S4>/SPERTE_measurement_function' */
@@ -159,6 +161,7 @@ typedef struct {
   real_T Dctleadlag2_RWORK[2];         /* '<S8>/Dctleadlag2' */
   real_T Dctnotch3_RWORK[4];           /* '<S8>/Dctnotch3' */
   real_T Dct2lowpass4_RWORK[4];        /* '<S8>/Dct2lowpass4' */
+  real_T Dctnotch5_RWORK[4];           /* '<S8>/Dctnotch5' */
   struct {
     void *LoggedData;
   } Live_Scope_PWORK;                  /* '<S5>/Live_Scope' */
@@ -195,26 +198,38 @@ struct P_FORCE_model_T_ {
                                  /* Mask Parameter: MeasurementBlock_triggertype
                                   * Referenced by: '<S4>/SPERTE_measurement_function'
                                   */
+  real_T Fvforwards_Gain;              /* Expression: 0.00009
+                                        * Referenced by: '<S9>/Fv forwards'
+                                        */
+  real_T Fvbackwards_Gain;             /* Expression: 0.0001
+                                        * Referenced by: '<S9>/Fv backwards'
+                                        */
+  real_T Fcforwards_Gain;              /* Expression: 0.002
+                                        * Referenced by: '<S10>/Fc forwards'
+                                        */
+  real_T Fcbackwards_Gain;             /* Expression: 0.008
+                                        * Referenced by: '<S10>/Fc backwards'
+                                        */
   real_T Gain_Gain;                    /* Expression: -1
                                         * Referenced by: '<S3>/Gain'
                                         */
   real_T SFunction_P1_Size_k[2];      /* Computed Parameter: SFunction_P1_Size_k
-                                       * Referenced by: '<S10>/S-Function'
+                                       * Referenced by: '<S12>/S-Function'
                                        */
   real_T SFunction_P1;                 /* Expression: portid
-                                        * Referenced by: '<S10>/S-Function'
+                                        * Referenced by: '<S12>/S-Function'
                                         */
   real_T SFunction_P2_Size[2];         /* Computed Parameter: SFunction_P2_Size
-                                        * Referenced by: '<S10>/S-Function'
+                                        * Referenced by: '<S12>/S-Function'
                                         */
   real_T SFunction_P2;                 /* Expression: ectimeout
-                                        * Referenced by: '<S10>/S-Function'
+                                        * Referenced by: '<S12>/S-Function'
                                         */
   real_T ec_Ebox_P1_Size[2];           /* Computed Parameter: ec_Ebox_P1_Size
-                                        * Referenced by: '<S9>/ec_Ebox'
+                                        * Referenced by: '<S11>/ec_Ebox'
                                         */
   real_T ec_Ebox_P1;                   /* Expression: link_id
-                                        * Referenced by: '<S9>/ec_Ebox'
+                                        * Referenced by: '<S11>/ec_Ebox'
                                         */
   real_T Quantizer1_Interval;          /* Expression: (2*pi)/(500*4)
                                         * Referenced by: '<Root>/Quantizer1'
@@ -230,6 +245,15 @@ struct P_FORCE_model_T_ {
                                         */
   real_T Noise_Seed;                   /* Expression: 0
                                         * Referenced by: '<Root>/Noise'
+                                        */
+  real_T Gain_Gain_j;                  /* Expression: 0.0004
+                                        * Referenced by: '<S2>/Gain'
+                                        */
+  real_T Switch_Threshold;             /* Expression: 0
+                                        * Referenced by: '<S9>/Switch'
+                                        */
+  real_T Switch_Threshold_c;           /* Expression: 0
+                                        * Referenced by: '<S10>/Switch'
                                         */
   real_T Gain1_Gain;                   /* Expression: 0.5
                                         * Referenced by: '<S8>/Gain1'
@@ -300,6 +324,36 @@ struct P_FORCE_model_T_ {
   real_T Dct2lowpass4_P3;              /* Expression: 0.001
                                         * Referenced by: '<S8>/Dct2lowpass4'
                                         */
+  real_T Dctnotch5_P1_Size[2];         /* Computed Parameter: Dctnotch5_P1_Size
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
+  real_T Dctnotch5_P1;                 /* Expression: f_num
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
+  real_T Dctnotch5_P2_Size[2];         /* Computed Parameter: Dctnotch5_P2_Size
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
+  real_T Dctnotch5_P2;                 /* Expression: b_num
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
+  real_T Dctnotch5_P3_Size[2];         /* Computed Parameter: Dctnotch5_P3_Size
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
+  real_T Dctnotch5_P3;                 /* Expression: f_den
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
+  real_T Dctnotch5_P4_Size[2];         /* Computed Parameter: Dctnotch5_P4_Size
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
+  real_T Dctnotch5_P4;                 /* Expression: b_den
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
+  real_T Dctnotch5_P5_Size[2];         /* Computed Parameter: Dctnotch5_P5_Size
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
+  real_T Dctnotch5_P5;                 /* Expression: 0.001
+                                        * Referenced by: '<S8>/Dctnotch5'
+                                        */
   real_T Constant2_Value;              /* Expression: 0
                                         * Referenced by: '<S3>/Constant2'
                                         */
@@ -310,16 +364,16 @@ struct P_FORCE_model_T_ {
                                         * Referenced by: '<S3>/Saturation'
                                         */
   real_T Saturation_UpperSat_d;        /* Expression: 10
-                                        * Referenced by: '<S9>/Saturation'
+                                        * Referenced by: '<S11>/Saturation'
                                         */
   real_T Saturation_LowerSat_e;        /* Expression: -10
-                                        * Referenced by: '<S9>/Saturation'
+                                        * Referenced by: '<S11>/Saturation'
                                         */
   real_T Constant_Value[2];            /* Expression: [0,0]
                                         * Referenced by: '<S3>/Constant'
                                         */
   real_T Gain_Gain_g;                  /* Expression: 1/100
-                                        * Referenced by: '<S9>/Gain'
+                                        * Referenced by: '<S11>/Gain'
                                         */
   real_T Constant1_Value[8];           /* Expression: [0,0,0,0,0,0,0,0]
                                         * Referenced by: '<S3>/Constant1'
@@ -351,15 +405,15 @@ struct tag_RTM_FORCE_model_T {
   struct {
     RTWSfcnInfo sfcnInfo;
     time_T *taskTimePtrs[3];
-    SimStruct childSFunctions[6];
-    SimStruct *childSFunctionPtrs[6];
-    struct _ssBlkInfo2 blkInfo2[6];
-    struct _ssSFcnModelMethods2 methods2[6];
-    struct _ssSFcnModelMethods3 methods3[6];
-    struct _ssSFcnModelMethods4 methods4[6];
-    struct _ssStatesInfo2 statesInfo2[6];
-    ssPeriodicStatesInfo periodicStatesInfo[6];
-    struct _ssPortInfo2 inputOutputPortInfo2[6];
+    SimStruct childSFunctions[7];
+    SimStruct *childSFunctionPtrs[7];
+    struct _ssBlkInfo2 blkInfo2[7];
+    struct _ssSFcnModelMethods2 methods2[7];
+    struct _ssSFcnModelMethods3 methods3[7];
+    struct _ssSFcnModelMethods4 methods4[7];
+    struct _ssStatesInfo2 statesInfo2[7];
+    ssPeriodicStatesInfo periodicStatesInfo[7];
+    struct _ssPortInfo2 inputOutputPortInfo2[7];
     struct {
       time_T sfcnPeriod[1];
       time_T sfcnOffset[1];
@@ -455,6 +509,23 @@ struct tag_RTM_FORCE_model_T {
       struct _ssDWorkRecord dWork[1];
       struct _ssDWorkAuxRecord dWorkAux[1];
     } Sfcn5;
+
+    struct {
+      time_T sfcnPeriod[1];
+      time_T sfcnOffset[1];
+      int_T sfcnTsMap[1];
+      struct _ssPortInputs inputPortInfo[1];
+      struct _ssInPortUnit inputPortUnits[1];
+      struct _ssInPortCoSimAttribute inputPortCoSimAttribute[1];
+      real_T const *UPtrs0[1];
+      struct _ssPortOutputs outputPortInfo[1];
+      struct _ssOutPortUnit outputPortUnits[1];
+      struct _ssOutPortCoSimAttribute outputPortCoSimAttribute[1];
+      uint_T attribs[5];
+      mxArray *params[5];
+      struct _ssDWorkRecord dWork[1];
+      struct _ssDWorkAuxRecord dWorkAux[1];
+    } Sfcn6;
   } NonInlinedSFcns;
 
   boolean_T zCCacheNeedsReset;
@@ -561,16 +632,6 @@ extern volatile boolean_T stopRequested;
 extern volatile boolean_T runModel;
 
 /*-
- * These blocks were eliminated from the model due to optimizations:
- *
- * Block '<S2>/Add' : Unused code path elimination
- * Block '<S2>/Fc forwards' : Unused code path elimination
- * Block '<S2>/Fv forwards' : Unused code path elimination
- * Block '<S2>/Gain' : Unused code path elimination
- * Block '<S2>/Sign' : Unused code path elimination
- */
-
-/*-
  * The generated code includes comments that allow you to trace directly
  * back to the appropriate location in the model.  The basic format
  * is <system>/block_name, where system is the system number (uniquely
@@ -593,8 +654,10 @@ extern volatile boolean_T runModel;
  * '<S6>'   : 'FORCE_model/Ref power'
  * '<S7>'   : 'FORCE_model/Subsystem'
  * '<S8>'   : 'FORCE_model/Controller (motor side)/temp'
- * '<S9>'   : 'FORCE_model/Fourth-Order Motion System/Ethercat E-box'
- * '<S10>'  : 'FORCE_model/Fourth-Order Motion System/Ethercat Supervisor'
- * '<S11>'  : 'FORCE_model/Measurement Block/SPERTE_measurement_function'
+ * '<S9>'   : 'FORCE_model/Feedforward /Subsystem'
+ * '<S10>'  : 'FORCE_model/Feedforward /Subsystem1'
+ * '<S11>'  : 'FORCE_model/Fourth-Order Motion System/Ethercat E-box'
+ * '<S12>'  : 'FORCE_model/Fourth-Order Motion System/Ethercat Supervisor'
+ * '<S13>'  : 'FORCE_model/Measurement Block/SPERTE_measurement_function'
  */
 #endif                                 /* FORCE_model_h_ */
