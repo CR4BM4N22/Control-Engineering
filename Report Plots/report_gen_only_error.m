@@ -4,8 +4,8 @@ clear;
 close all;
 
 %% Load data
-y_data = load('outputFeedForwardTrajectoryNoValues.mat');
-e_data = load('errorFeedForwardTrajectoryNoValues.mat');
+y_data = load('outputEverything.mat');
+e_data = load('errorEverything.mat');
 
 % Extract signals
 t_y = y_data.output.Time(:);
@@ -71,7 +71,7 @@ xlabel('Time [s]');
 title('Position 2nd Mass and Positioning Error');
 
 legend([h1 h2], {'Position','Error'}, ...
-    'Location','best');
+    'Location','southeast');
 
 grid on;
 box on;
@@ -82,6 +82,19 @@ ax.YAxis(1).Color = '#0072BD';
 ax.YAxis(2).Color = '#D95319';
 ax.FontSize = 11;
 ax.LineWidth = 1;
+
+%% Performance annotation
+time_text = sprintf('Total Time = %.2f s\n',max(t_y));
+
+% Position textbox in northeast corner
+text(0.98, 0.98, time_text, ...
+    'Units','normalized', ...
+    'FontSize',10, ...
+    'FontWeight','bold', ...
+    'BackgroundColor','white', ...
+    'EdgeColor',[0.7 0.7 0.7], ...
+    'HorizontalAlignment','right', ...
+    'VerticalAlignment','top');
 
 %% Figure 2: Constant velocity interval
 fig2 = figure('Color','w','Position',[200 200 1100 450]);
@@ -163,10 +176,10 @@ text(0.98, 0.98, RMS_text, ...
     'VerticalAlignment','top');
 
 %% Export figures
-exportgraphics(fig1, 'FeedForwardTrajectoryNoValues.png', ...
+exportgraphics(fig1, 'Everything.png', ...
     'Resolution', 300);
 
-exportgraphics(fig2, 'FeedForwardTrajectoryNoValues_Error.png', ...
+exportgraphics(fig2, 'Everything_Error.png', ...
     'Resolution', 300);
 
 fprintf('\nBoth figures exported successfully.\n');
